@@ -1,10 +1,37 @@
 package banco.simulado.api.domain.Gerente;
 
+import banco.simulado.api.domain.Agencia.Agencia;
+import banco.simulado.api.domain.Pessoa.Pessoa;
+import banco.simulado.api.domain.StatusTrabalho.StatusTrabalho;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Gerente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Enumerated(EnumType.STRING)
-    StatusTrabalho status = StatusTrabalho.TRABALHANDO;
+    StatusTrabalho statusTrabalho = StatusTrabalho.TRABALHANDO;
+
     @ManyToOne
-    Agencia agencia;
+    private Agencia agencia;
+
+    @Embedded
+    private Pessoa pessoa;
+
+    public Gerente (Agencia agencia, String nome, String cpf, LocalDate dataNascimento, Integer idade) {
+        this.pessoa = new Pessoa(nome, cpf, dataNascimento, idade);
+        this.agencia = agencia;
+    }
 
 }

@@ -1,5 +1,12 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Agencia.AgenciaRepository;
+import banco.simulado.api.domain.Cliente.ClienteRepository;
+import banco.simulado.api.domain.Conta.ContaRepository;
+import banco.simulado.api.domain.Gerente.GerenteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class ContaService {
 

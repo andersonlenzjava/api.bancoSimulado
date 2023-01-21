@@ -1,6 +1,20 @@
 package banco.simulado.api.domain.Conta;
 
+import banco.simulado.api.domain.Agencia.Agencia;
+import banco.simulado.api.domain.Cliente.Cliente;
+import banco.simulado.api.domain.Gerente.Gerente;
+import banco.simulado.api.domain.TipoConta.TipoConta;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Conta {
 
     @Id
