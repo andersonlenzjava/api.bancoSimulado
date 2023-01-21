@@ -1,16 +1,23 @@
 package banco.simulado.api.domain.Transacao;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 import java.math.BigDecimal;
 
 public record TransferirRegister(
 
-        private Long numeroContaTransferir;
+        @NotNull
+        @NotEmpty
+        String numeroContaTransferir,
 
-        private Long numeroContaReceber;
+        @NotNull
+        @NotEmpty
+        String numeroContaReceber,
 
         @Positive
         @NotNull
-        private BigDecimal valorTransferir;
-
+        BigDecimal valorTransferir
 ) {
 }

@@ -33,7 +33,4 @@ public class Transacao {
     @ManyToOne
     private Conta contaDestino;
 
-
-
-
 }

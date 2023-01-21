@@ -1,5 +1,6 @@
 package banco.simulado.api.domain.Transacao;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -7,8 +8,9 @@ import java.math.BigDecimal;
 
 public record SacarDepositarRegister(
 
-
-        Long numeroContaTransferir,
+        @NotNull
+        @NotEmpty
+        String numeroContaTransferir,
 
         @Positive
         @NotNull
