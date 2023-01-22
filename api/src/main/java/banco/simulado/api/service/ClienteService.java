@@ -1,5 +1,18 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Cliente.Cliente;
+import banco.simulado.api.domain.Cliente.ClienteRepository;
+import banco.simulado.api.domain.Conta.Conta;
+import banco.simulado.api.domain.Conta.ContaRepository;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.awt.print.Pageable;
+import java.util.Optional;
+
 @Service
 public class ClienteService {
 
@@ -10,7 +23,7 @@ public class ClienteService {
     private ContaRepository contaRepository;
 
     // get
-    public Page<ClienteDto> listar(String nomeCliente, Pageable paginacao) {
+    public Page<ClienteDto> listar(String nomeCliente, Pageablee paginacao) {
         if (nomeCliente == null) {
             Page<Cliente> clientes = clienteRepository.findAll(paginacao);
             return ClienteDto.converter(clientes);

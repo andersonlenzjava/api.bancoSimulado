@@ -1,5 +1,17 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Agencia.Agencia;
+import banco.simulado.api.domain.Agencia.AgenciaRepository;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.awt.print.Pageable;
+import java.net.URI;
+import java.util.Optional;
+
 @Service
 public class AgenciaService {
 

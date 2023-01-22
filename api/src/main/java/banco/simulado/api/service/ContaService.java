@@ -2,10 +2,17 @@ package banco.simulado.api.service;
 
 import banco.simulado.api.domain.Agencia.AgenciaRepository;
 import banco.simulado.api.domain.Cliente.ClienteRepository;
+import banco.simulado.api.domain.Conta.Conta;
 import banco.simulado.api.domain.Conta.ContaRepository;
 import banco.simulado.api.domain.Gerente.GerenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.awt.print.Pageable;
+import java.net.URI;
+import java.util.Optional;
 
 @Service
 public class ContaService {

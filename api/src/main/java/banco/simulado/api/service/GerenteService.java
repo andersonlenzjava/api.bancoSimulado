@@ -1,5 +1,16 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Gerente.Gerente;
+import banco.simulado.api.domain.Gerente.GerenteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.awt.print.Pageable;
+import java.util.Optional;
+
 @Service
 public class GerenteService {
 

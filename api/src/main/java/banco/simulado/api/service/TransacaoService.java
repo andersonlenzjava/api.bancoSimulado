@@ -1,6 +1,20 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Conta.Conta;
+import banco.simulado.api.domain.Conta.ContaRepository;
+import banco.simulado.api.domain.TipoOperacao.TipoOperacao;
+import banco.simulado.api.domain.Transacao.Transacao;
+import banco.simulado.api.domain.Transacao.TransacaoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class TransacaoService {
