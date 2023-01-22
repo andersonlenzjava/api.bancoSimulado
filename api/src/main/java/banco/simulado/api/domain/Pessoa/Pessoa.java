@@ -36,4 +36,8 @@ public class Pessoa {
         return Integer.valueOf(idade.getYears());
     }
 
+    public Integer getIdade() {
+        this.idade = this.calculaIdade(dataNascimento);
+        return idade;
+    }
 }
