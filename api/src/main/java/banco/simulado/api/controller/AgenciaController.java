@@ -1,9 +1,17 @@
 package banco.simulado.api.controller;
 
+import banco.simulado.api.domain.Agencia.AgenciaRegister;
+import banco.simulado.api.domain.Agencia.AgenciaResponse;
+import banco.simulado.api.service.AgenciaService;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/agencias")
@@ -13,33 +21,33 @@ public class AgenciaController {
     private AgenciaService agenciaService;
 
     @GetMapping
-    public Page<AgenciaDto> listar(@RequestParam(required = false) String numeroAgencia,
-                                   @PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+    public Page<AgenciaResponse> listar(@RequestParam(required = false) String numeroAgencia,
+                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
         return agenciaService.listar(numeroAgencia, paginacao);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AgenciaDto> detalhar(@PathVariable Long id) {
+    public ResponseEntity<AgenciaResponse> detalhar(@PathVariable Long id) {
         return agenciaService.detalharPorId(id);
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<AgenciaDto> cadastrar(@RequestBody @Valid AgenciaForm agenciaForm,
+    public ResponseEntity<AgenciaResponse> cadastrar(@RequestBody @Valid AgenciaRegister agenciaForm,
                                                 UriComponentsBuilder uriBuilder) throws Exception {
         return agenciaService.cadastrarAgencia(agenciaForm, uriBuilder);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<AgenciaDto> atualizar(@PathVariable Long id, @RequestBody @Valid AgenciaForm agenciaForm,
+    public ResponseEntity<AgenciaResponse> atualizar(@PathVariable Long id, @RequestBody @Valid AgenciaRegister agenciaForm,
                                                 UriComponentsBuilder uriBuilder) throws Exception {
         return agenciaService.atualizarAgencia(id, agenciaForm, uriBuilder);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> remover(@PathVariable Long id) {
+    public ResponseEntity remover(@PathVariable Long id) {
         return agenciaService.removerAgencia(id);
     }
 }
