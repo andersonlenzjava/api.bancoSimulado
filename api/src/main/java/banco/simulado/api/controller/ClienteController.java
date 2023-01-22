@@ -2,6 +2,7 @@ package banco.simulado.api.controller;
 
 import banco.simulado.api.domain.Cliente.ClienteRegister;
 import banco.simulado.api.domain.Cliente.ClienteResponse;
+import banco.simulado.api.domain.Conta.ContaResponse;
 import banco.simulado.api.service.ClienteService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -30,7 +31,7 @@ public class ClienteController {
     }
 
     @GetMapping("/contas/{id}")
-    public List<ClienteResponse> listarContas(@PathVariable Long id) throws Exception {
+    public Page<ContaResponse> listarContas(@PathVariable Long id) throws Exception {
         return clienteService.listarContas(id);
     }
 

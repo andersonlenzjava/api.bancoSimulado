@@ -29,8 +29,8 @@ public class Gerente {
     @Embedded
     private Pessoa pessoa;
 
-    public Gerente (Agencia agencia, String nome, String cpf, LocalDate dataNascimento, Integer idade) {
-        this.pessoa = new Pessoa(nome, cpf, dataNascimento, idade);
+    public Gerente (String nome, String cpf, LocalDate dataNascimento, Agencia agencia) {
+        this.pessoa = new Pessoa(nome, cpf, dataNascimento);
         this.agencia = agencia;
     }
 

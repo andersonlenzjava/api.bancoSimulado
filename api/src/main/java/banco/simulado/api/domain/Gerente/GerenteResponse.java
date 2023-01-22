@@ -1,7 +1,10 @@
 package banco.simulado.api.domain.Gerente;
 
 import banco.simulado.api.domain.Agencia.Agencia;
+import banco.simulado.api.domain.Cliente.Cliente;
+import banco.simulado.api.domain.Cliente.ClienteResponse;
 import banco.simulado.api.domain.StatusTrabalho.StatusTrabalho;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 
@@ -23,4 +26,13 @@ public record GerenteResponse(
                 gerente.getPessoa().getIdade(),
                 gerente.getAgencia().getNumero());
     }
+
+    public static Page<GerenteResponse> converter(Page<Gerente> gerentes) {
+        return gerentes.map(GerenteResponse::new);
+    }
+
+    public static GerenteResponse converterUmGerente(Gerente gerente) {
+        return new GerenteResponse(gerente);
+    }
+
 }

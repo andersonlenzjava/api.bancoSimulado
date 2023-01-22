@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Agencia {
 
@@ -24,4 +23,11 @@ public class Agencia {
     private String cep;
     private Long numeroPredio;
 
+    public Agencia(String numero, String nome, String rua, String cep, Long numeroPredio) {
+        this.numero = numero;
+        this.nome = nome;
+        this.rua = rua;
+        this.cep = cep;
+        this.numeroPredio = numeroPredio;
+    }
 }

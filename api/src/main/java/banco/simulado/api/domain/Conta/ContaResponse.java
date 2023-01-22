@@ -1,6 +1,9 @@
 package banco.simulado.api.domain.Conta;
 
+import banco.simulado.api.domain.Cliente.Cliente;
+import banco.simulado.api.domain.Cliente.ClienteResponse;
 import banco.simulado.api.domain.TipoConta.TipoConta;
+import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
 
@@ -26,4 +29,13 @@ public record ContaResponse(
                 conta.getCliente().getId(),
                 conta.getCliente().getPessoa().getNome());
     }
+
+    public static Page<ContaResponse> converter(Page<Conta> contas) {
+        return contas.map(ContaResponse::new);
+    }
+
+    public static ContaResponse converterUmaConta(Conta conta) {
+        return new ContaResponse(conta);
+    }
+
 }

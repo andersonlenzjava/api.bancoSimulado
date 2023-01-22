@@ -1,5 +1,6 @@
 package banco.simulado.api.domain.Cliente;
 
+import banco.simulado.api.domain.Agencia.Agencia;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,4 +23,16 @@ public record ClienteRegister(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
         LocalDate dataNascimento
 ) {
+        public Cliente converter() {
+                return new Cliente(this.nome, this.cpf, this.dataNascimento);
+        }
+
+        public Cliente atualizar(Cliente cliente, ClienteRepository clienteRepository) {
+                cliente.getPessoa().setNome(this.nome);
+                cliente.getPessoa().setCpf(this.cpf);
+                cliente.getPessoa().setDataNascimento(this.dataNascimento);
+                clienteRepository.save(cliente);
+                return cliente;
+        }
+
 }

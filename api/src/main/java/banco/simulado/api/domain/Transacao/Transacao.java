@@ -33,4 +33,11 @@ public class Transacao {
     @ManyToOne
     private Conta contaDestino;
 
+    public Transacao(Conta contaOperadora, Conta contaDestino, TipoOperacao tipoOperacao, BigDecimal valor, LocalDate now) {
+        this.valor =valor;
+        this.dataTransacao = now;
+        this.tipoOperacao = tipoOperacao;
+        this.contaOperadora = contaOperadora;
+        this.contaDestino = contaDestino;
+    }
 }

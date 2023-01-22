@@ -22,7 +22,7 @@ public class Cliente {
     @Embedded
     private Pessoa pessoa;
 
-    public Cliente (String nome, String cpf, LocalDate dataNascimento, Integer idade) {
-        this.pessoa = new Pessoa(nome, cpf, dataNascimento, idade);
+    public Cliente (String nome, String cpf, LocalDate dataNascimento) {
+        this.pessoa = new Pessoa(nome, cpf, dataNascimento);
     }
 }

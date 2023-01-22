@@ -1,5 +1,9 @@
 package banco.simulado.api.domain.Cliente;
 
+import banco.simulado.api.domain.Agencia.Agencia;
+import banco.simulado.api.domain.Agencia.AgenciaResponse;
+import org.springframework.data.domain.Page;
+
 import java.time.LocalDate;
 
 public record ClienteResponse(
@@ -16,4 +20,13 @@ public record ClienteResponse(
                 cliente.getPessoa().getDataNascimento(),
                 cliente.getPessoa().getIdade());
     }
+
+    public static Page<ClienteResponse> converter(Page<Cliente> clientes) {
+        return clientes.map(ClienteResponse::new);
+    }
+
+    public static ClienteResponse converterUmCliente(Cliente cliente) {
+        return new ClienteResponse(cliente);
+    }
+
 }

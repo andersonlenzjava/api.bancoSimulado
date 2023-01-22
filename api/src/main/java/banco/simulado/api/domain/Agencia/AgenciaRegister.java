@@ -23,4 +23,8 @@ public record AgenciaRegister(
         @Positive
         @NotNull
         Long numeroPredio) {
+
+        public Agencia converter() {
+                return new Agencia(this.numero, this.nome, this.rua, this.cep, this.numeroPredio);
+        }
 }

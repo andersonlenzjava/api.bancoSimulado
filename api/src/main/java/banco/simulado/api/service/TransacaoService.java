@@ -3,8 +3,7 @@ package banco.simulado.api.service;
 import banco.simulado.api.domain.Conta.Conta;
 import banco.simulado.api.domain.Conta.ContaRepository;
 import banco.simulado.api.domain.TipoOperacao.TipoOperacao;
-import banco.simulado.api.domain.Transacao.Transacao;
-import banco.simulado.api.domain.Transacao.TransacaoRepository;
+import banco.simulado.api.domain.Transacao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,36 +25,34 @@ public class TransacaoService {
     private TransacaoRepository transacaoRepository;
 
     //depositar
-    public ResponseEntity<SacarDepositarDto> depositar(SacarDepositarForm sacarDepositarForm,
-                                                       UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOperadora = contaRepository.findByNumero(sacarDepositarForm.getNumeroContaTransferir());
+    public ResponseEntity<SacarDepositarResponse> depositar(SacarDepositarRegister sacarDepositarForm,
+                                                            UriComponentsBuilder uriBuilder) throws Exception {
+        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaTransferir()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
-            conta.setSaldo(conta.getSaldo().add(sacarDepositarForm.getValorTransferir()));
+            conta.setSaldo(conta.getSaldo().add(sacarDepositarForm.valorTransferir()));
             contaRepository.save(conta);
 
-            salvarTransferencia(conta, conta, TipoOperacao.DEPOSITAR, sacarDepositarForm.getValorTransferir());
-            return ResponseEntity.ok(new SacarDepositarDto(conta, TipoOperacao.DEPOSITAR,
-                    sacarDepositarForm.getValorTransferir(), LocalDate.now()));
+            Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.DEPOSITAR, sacarDepositarForm.valorTransferir());
+            return ResponseEntity.ok(new SacarDepositarResponse(transacao));
         } else {
             throw new Exception("Conta inestitente!");
         }
     }
 
     //sacar
-    public ResponseEntity<SacarDepositarDto> sacar(SacarDepositarForm sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> sacar(SacarDepositarRegister sacarDepositarForm,
                                                    UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOperadora = contaRepository.findByNumero(sacarDepositarForm.getNumeroContaTransferir());
+        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaTransferir()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
 
-            if (((sacarDepositarForm.getValorTransferir().compareTo(conta.getSaldo())) < 0)) {
-                conta.setSaldo(conta.getSaldo().subtract(sacarDepositarForm.getValorTransferir()));
+            if (((sacarDepositarForm.valorTransferir().compareTo(conta.getSaldo())) < 0)) {
+                conta.setSaldo(conta.getSaldo().subtract(sacarDepositarForm.valorTransferir()));
                 contaRepository.save(conta);
 
-                salvarTransferencia(conta, conta, TipoOperacao.SACAR, sacarDepositarForm.getValorTransferir());
-                return ResponseEntity.ok(new SacarDepositarDto(conta, TipoOperacao.SACAR,
-                        sacarDepositarForm.getValorTransferir(), LocalDate.now()));
+                Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.SACAR, sacarDepositarForm.valorTransferir());
+                return ResponseEntity.ok(new SacarDepositarResponse(transacao));
             } else {
                 throw new Exception("Saldo insuficiente!");
             }
@@ -65,25 +62,24 @@ public class TransacaoService {
     }
 
     //transferir
-    public ResponseEntity<TransferirDto> transferir(TransferirForm transferirForm, UriComponentsBuilder uriBuilder)
+    public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirForm, UriComponentsBuilder uriBuilder)
             throws Exception {
         Optional<Conta> contaOptionalOperadora = contaRepository
-                .findByNumero(transferirForm.getNumeroContaTransferir());
-        Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(transferirForm.getNumeroContaReceber());
+                .findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
+        Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
         if ((contaOptionalOperadora.isPresent()) && (contaOptionalDestino.isPresent())) {
             Conta contaOperadora = contaOptionalOperadora.get();
             Conta contaDestino = contaOptionalDestino.get();
 
-            if (((transferirForm.getValorTransferir().compareTo(contaOperadora.getSaldo())) < 0)) {
-                contaOperadora.setSaldo(contaOperadora.getSaldo().subtract(transferirForm.getValorTransferir()));
-                contaDestino.setSaldo(contaDestino.getSaldo().add(transferirForm.getValorTransferir()));
+            if (((transferirForm.valorTransferir().compareTo(contaOperadora.getSaldo())) < 0)) {
+                contaOperadora.setSaldo(contaOperadora.getSaldo().subtract(transferirForm.valorTransferir()));
+                contaDestino.setSaldo(contaDestino.getSaldo().add(transferirForm.valorTransferir()));
                 contaRepository.save(contaOperadora);
                 contaRepository.save(contaDestino);
 
-                salvarTransferencia(contaOperadora, contaDestino, TipoOperacao.TRANSFERIR,
-                        transferirForm.getValorTransferir());
-                return ResponseEntity.ok(new TransferirDto(contaOperadora, contaDestino, TipoOperacao.TRANSFERIR,
-                        transferirForm.getValorTransferir(), LocalDate.now()));
+                 Transacao transacao = salvarTransferencia(contaOperadora, contaDestino, TipoOperacao.TRANSFERIR,
+                        transferirForm.valorTransferir());
+                return ResponseEntity.ok(new TransferirResponse(transacao));
             } else {
                 throw new Exception("Saldo insuficiente!");
             }
@@ -113,40 +109,41 @@ public class TransacaoService {
     }
 
     //detalharPorId
-    public ResponseEntity<TransferirDto> detalharPorId(Long id) {
+    public ResponseEntity<TransferirResponse> detalharPorId(Long id) {
         Optional<Transacao> optionalTransacao = transacaoRepository.findById(id);
         if (optionalTransacao.isPresent()) {
-            return ResponseEntity.ok(TransferirDto.converterUmaTransacao(optionalTransacao.get()));
+            return ResponseEntity.ok(TransferirResponse.converterUmaTransacao(optionalTransacao.get()));
         }
         return ResponseEntity.notFound().build();
     }
 
     //ListarPorConta
-    public Page<TransferirDto> listarPorConta(Long numeroConta, Pageable paginacao) {
+    public Page<TransferirResponse> listarPorConta(Long numeroConta, Pageable paginacao) {
         if (numeroConta == null) {
             Page<Transacao> transacoes = transacaoRepository.findAll(paginacao);
-            return TransferirDto.converterTrasacoes(transacoes);
+            return TransferirResponse.converterTrasacoes(transacoes);
         } else {
             Page<Transacao> transacoes = transacaoRepository.findByContaNumero(numeroConta, paginacao);
-            return TransferirDto.converterTrasacoes(transacoes);
+            return TransferirResponse.converterTrasacoes(transacoes);
         }
     }
 
     //ListarTransacaoMaioresQue
-    public Page<TransferirDto> listarTransacaoMaiorQue(BigDecimal valorTransacao, Pageable paginacao) {
+    public Page<TransferirResponse> listarTransacaoMaiorQue(BigDecimal valorTransacao, Pageable paginacao) {
         if (valorTransacao != null) {
             Page<Transacao> transacoes = transacaoRepository.findMaiorQue(valorTransacao, paginacao);
-            return TransferirDto.converterTrasacoes(transacoes);
+            return TransferirResponse.converterTrasacoes(transacoes);
         } else {
             return null;
         }
     }
 
     //Auxiliar -- salvarTransferencia
-    public void salvarTransferencia(Conta contaOperadora, Conta contaDestino, TipoOperacao tipoOperacao,
+    public Transacao salvarTransferencia(Conta contaOperadora, Conta contaDestino, TipoOperacao tipoOperacao,
                                     BigDecimal valor) {
         Transacao transacao = new Transacao(contaOperadora, contaDestino, tipoOperacao, valor, LocalDate.now());
         transacaoRepository.save(transacao);
+        return transacao;
     }
 }
 

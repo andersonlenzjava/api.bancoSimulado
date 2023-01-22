@@ -2,7 +2,7 @@ package banco.simulado.api.controller;
 
 import banco.simulado.api.domain.Transacao.SacarDepositarRegister;
 import banco.simulado.api.domain.Transacao.SacarDepositarResponse;
-import banco.simulado.api.domain.Transacao.TransacaoResponse;
+import banco.simulado.api.domain.Transacao.TransferirResponse;
 import banco.simulado.api.domain.Transacao.TransferirRegister;
 import banco.simulado.api.service.TransacaoService;
 import jakarta.validation.Valid;
@@ -41,27 +41,27 @@ public class TransacaoController {
 
     @PostMapping("/transferir")
     @Transactional
-    public ResponseEntity<TransacaoResponse> transferir(@RequestBody @Valid TransferirRegister transferirForm,
-                                                        UriComponentsBuilder uriBuilder) throws Exception {
+    public ResponseEntity<TransferirResponse> transferir(@RequestBody @Valid TransferirRegister transferirForm,
+                                                         UriComponentsBuilder uriBuilder) throws Exception {
         return transacaoService.transferir(transferirForm, uriBuilder);
     }
 
     //retorna as transacoes por numero da conta
     @GetMapping
-    public Page<TransacaoResponse> listarPorConta(@RequestParam(required = false) Long numeroConta,
-                                              @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+    public Page<TransferirResponse> listarPorConta(@RequestParam(required = false) Long numeroConta,
+                                                   @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
         return transacaoService.listarPorConta(numeroConta, paginacao);
     }
 
     //retorna por transacao
     @GetMapping("/{id}")
-    public ResponseEntity<TransacaoResponse> detalharId(@PathVariable Long id) {
+    public ResponseEntity<TransferirResponse> detalharId(@PathVariable Long id) {
         return transacaoService.detalharPorId(id);
     }
 
     @GetMapping("/maioresQue")
-    public Page<TransacaoResponse> listarPorValor(@RequestParam(required = true) BigDecimal valorTransacao,
-                                                  @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+    public Page<TransferirResponse> listarPorValor(@RequestParam(required = true) BigDecimal valorTransacao,
+                                                   @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
         return transacaoService.listarTransacaoMaiorQue(valorTransacao, paginacao);
     }
 

@@ -1,9 +1,12 @@
 package banco.simulado.api.service;
 
 import banco.simulado.api.domain.Agencia.Agencia;
+import banco.simulado.api.domain.Agencia.AgenciaRegister;
 import banco.simulado.api.domain.Agencia.AgenciaRepository;
+import banco.simulado.api.domain.Agencia.AgenciaResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -19,27 +22,27 @@ public class AgenciaService {
     private AgenciaRepository agenciaRepository;
 
     //get
-    public Page<AgenciaDto> listar(String numeroAgencia, Pageable paginacao) {
+    public Page<AgenciaResponse> listar(String numeroAgencia, Pageable paginacao) {
         if (numeroAgencia == null) {
             Page<Agencia> agencias = agenciaRepository.findAll(paginacao);
-            return AgenciaDto.converter(agencias);
+            return AgenciaResponse.converter(agencias);
         } else {
             Page<Agencia> agencias = agenciaRepository.findByNumero(numeroAgencia, paginacao);
-            return AgenciaDto.converter(agencias);
+            return AgenciaResponse.converter(agencias);
         }
     }
 
     //get id
-    public ResponseEntity<AgenciaDto> detalharPorId(Long id) {
+    public ResponseEntity<AgenciaResponse> detalharPorId(Long id) {
         Optional<Agencia> agencia = agenciaRepository.findById(id);
         if (agencia.isPresent()) {
-            return ResponseEntity.ok(AgenciaDto.converterUmaAgencia(agencia.get()));
+            return ResponseEntity.ok(AgenciaResponse.converterUmaAgencia(agencia.get()));
         }
         return ResponseEntity.notFound().build();
     }
 
     //cadastrar
-    public ResponseEntity<AgenciaDto> cadastrarAgencia(@Valid AgenciaForm agenciaForm,
+    public ResponseEntity<AgenciaResponse> cadastrarAgencia(@Valid AgenciaRegister agenciaForm,
                                                        UriComponentsBuilder uriBuilder) throws Exception {
         Agencia agencia = agenciaForm.converter();
         Optional<Agencia> agenciaOptional = agenciaRepository.findByNomeAndNumeroAndNumeroPredio(agencia.getNome(),
@@ -47,25 +50,25 @@ public class AgenciaService {
         if (agenciaOptional.isEmpty()) {
             agenciaRepository.save(agencia);
             URI uri = uriBuilder.path("/agencias/{id}").buildAndExpand(agencia.getId()).toUri();
-            return ResponseEntity.created(uri).body(new AgenciaDto(agencia));
+            return ResponseEntity.created(uri).body(new AgenciaResponse(agencia));
         } else {
             throw new Exception("Agencia já existe");
         }
     }
 
     //atualizar
-    public ResponseEntity<AgenciaDto> atualizarAgencia(Long id, AgenciaForm agenciaForm,
+    public ResponseEntity<AgenciaResponse> atualizarAgencia(Long id, AgenciaRegister agenciaForm,
                                                        UriComponentsBuilder uriBuilder)  {
         Optional<Agencia> agenciaOptional = agenciaRepository.findById(id);
         if(agenciaOptional.isPresent()) {
             Agencia agencia = agenciaOptional.get();
-            agencia.setCep(agenciaForm.getCep());
-            agencia.setNome(agenciaForm.getNome());
-            agencia.setNumero(agenciaForm.getNumero());
-            agencia.setNumeroPredio(agenciaForm.getNumeroPredio());
-            agencia.setRua(agenciaForm.getRua());
+            agencia.setCep(agenciaForm.cep());
+            agencia.setNome(agenciaForm.nome());
+            agencia.setNumero(agenciaForm.numero());
+            agencia.setNumeroPredio(agenciaForm.numeroPredio());
+            agencia.setRua(agenciaForm.rua());
 
-            return ResponseEntity.ok(new AgenciaDto(agencia));
+            return ResponseEntity.ok(new AgenciaResponse(agencia));
         }
         return ResponseEntity.notFound().build();
     }

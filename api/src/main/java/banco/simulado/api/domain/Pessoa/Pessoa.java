@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Embeddable
 @Getter
@@ -22,5 +23,17 @@ public class Pessoa {
     private String cpf;
     private LocalDate dataNascimento;
     private Integer idade;
+
+    public Pessoa(String nome, String cpf, LocalDate dataNascimento) {
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.idade = this.calculaIdade(dataNascimento);
+    }
+
+    public Integer calculaIdade(LocalDate dataNascimento) {
+        Period idade = Period.between(dataNascimento, LocalDate.now());
+        return Integer.valueOf(idade.getYears());
+    }
 
 }
