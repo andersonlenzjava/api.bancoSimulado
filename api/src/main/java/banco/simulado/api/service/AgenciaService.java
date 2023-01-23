@@ -42,7 +42,7 @@ public class AgenciaService {
     }
 
     //cadastrar
-    public ResponseEntity<AgenciaResponse> cadastrarAgencia(@Valid AgenciaRegister agenciaForm,
+    public ResponseEntity<AgenciaResponse> cadastrarAgencia(AgenciaRegister agenciaForm,
                                                        UriComponentsBuilder uriBuilder) throws Exception {
         Agencia agencia = agenciaForm.converter();
         Optional<Agencia> agenciaOptional = agenciaRepository.findByNomeAndNumeroAndNumeroPredio(agencia.getNome(),
@@ -78,7 +78,7 @@ public class AgenciaService {
         Optional<Agencia> optinalAgencia = agenciaRepository.findById(id);
         if (optinalAgencia.isPresent()) {
             agenciaRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }

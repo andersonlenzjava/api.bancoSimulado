@@ -38,6 +38,18 @@ public class ClienteService {
         }
     }
 
+    // retornar contas do usuário
+    public Page<ContaResponse> listarContasUsuario(Long id) throws Exception {
+        Optional<Cliente> optinalCliente = clienteRepository.findById(id);
+        if (optinalCliente.isPresent()) {
+            Cliente cliente = optinalCliente.get();
+            Page<Conta> contas = contaRepository.findByCliente(cliente);
+            return ContaResponse.converter(contas);
+        } else {
+            throw new Exception("Cliente não existente");
+        }
+    }
+
     // get id
     public ResponseEntity<ClienteResponse> detalharPorId(Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
@@ -78,20 +90,10 @@ public class ClienteService {
         Optional<Cliente> optinalCliente = clienteRepository.findById(id);
         if (optinalCliente.isPresent()) {
             clienteRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
 
-    // retornar contas do usuário
-    public Page<ContaResponse> listarContas(Long id) throws Exception {
-        Optional<Cliente> optinalCliente = clienteRepository.findById(id);
-        if (optinalCliente.isPresent()) {
-            Cliente cliente = optinalCliente.get();
-            Page<Conta> contas = contaRepository.findByCliente(cliente);
-            return ContaResponse.converter(contas);
-        } else {
-            throw new Exception("Cliente não existente");
-        }
-    }
+
 }

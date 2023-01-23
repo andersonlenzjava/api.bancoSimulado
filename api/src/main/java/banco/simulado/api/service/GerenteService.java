@@ -74,7 +74,7 @@ public class GerenteService {
         Optional<Gerente> optinalGerente = gerenteRepository.findById(id);
         if (optinalGerente.isPresent()) {
             gerenteRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }

@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
@@ -31,10 +29,9 @@ public class ClienteController {
     }
 
     @GetMapping("/contas/{id}")
-    public Page<ContaResponse> listarContas(@PathVariable Long id) throws Exception {
-        return clienteService.listarContas(id);
+    public Page<ContaResponse> listarContasUsuario(@PathVariable Long id) throws Exception {
+        return clienteService.listarContasUsuario(id);
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponse> detalhar(@PathVariable Long id) {

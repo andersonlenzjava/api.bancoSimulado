@@ -103,7 +103,7 @@ public class TransacaoService {
             contaRepository.save(contaDestino);
             transacaoRepository.delete(transacao);
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }

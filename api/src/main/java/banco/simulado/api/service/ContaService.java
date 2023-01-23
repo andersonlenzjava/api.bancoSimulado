@@ -81,7 +81,7 @@ public class ContaService {
         Optional<Conta> optinalCliente = contaRepository.findById(id);
         if (optinalCliente.isPresent()) {
             contaRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
