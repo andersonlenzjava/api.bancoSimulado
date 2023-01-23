@@ -33,9 +33,8 @@ public class Conta {
     @ManyToOne
     private Cliente cliente;
 
-    public Conta(Long numero, BigDecimal saldo, TipoConta tipoConta, Agencia agencia, Gerente gerente, Cliente cliente) {
+    public Conta(Long numero, TipoConta tipoConta, Agencia agencia, Gerente gerente, Cliente cliente) {
         this.numero = numero;
-        this.saldo = saldo;
         this.tipoConta = tipoConta;
         this.agencia = agencia;
         this.gerente = gerente;

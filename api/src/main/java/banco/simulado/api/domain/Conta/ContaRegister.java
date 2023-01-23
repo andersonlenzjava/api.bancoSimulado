@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 public record ContaRegister(
@@ -20,9 +19,6 @@ public record ContaRegister(
         @NotNull
         @Length(min = 5, max = 5)
         String numero,
-
-        @NotNull
-        BigDecimal saldo,
 
         @NotNull
         TipoConta tipoConta,
@@ -50,7 +46,7 @@ public record ContaRegister(
                         Agencia agencia = optionalAgencia.get();
                         Gerente gerente = optionalGerente.get();
                         Cliente cliente = optionalCliente.get();
-                        return new Conta(Long.valueOf(numero), saldo, tipoConta, agencia, gerente, cliente);
+                        return new Conta(Long.valueOf(numero), tipoConta, agencia, gerente, cliente);
                 } else {
                         throw new Exception("Agencia, Gerente ou Cliente não encontrada");
                 }
@@ -61,7 +57,6 @@ public record ContaRegister(
                 if (optionalAgencia.isPresent()) {
                         Agencia agencia = optionalAgencia.get();
                         conta.setNumero(Long.valueOf(numero));
-                        conta.setSaldo(saldo);
                         conta.setTipoConta(tipoConta);
                         conta.setAgencia(agencia);
                         return conta;
