@@ -60,9 +60,9 @@ public class ClienteService {
     }
 
     // cadastrar
-    public ResponseEntity<ClienteResponse> cadastrarCliente(@Valid ClienteRegister clienteForm, UriComponentsBuilder uriBuilder)
+    public ResponseEntity<ClienteResponse> cadastrarCliente(@Valid ClienteRegister clienteRegister, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Cliente cliente = clienteForm.converter();
+        Cliente cliente = clienteRegister.converter();
         Optional<Cliente> clienteOptional = clienteRepository.findByPessoaNomeOrPessoaCpf(cliente.getPessoa().getNome(),
                 cliente.getPessoa().getCpf());
         if (clienteOptional.isEmpty()) {
@@ -76,10 +76,10 @@ public class ClienteService {
     }
 
     // atualizar
-    public ResponseEntity<ClienteResponse> atualizar(Long id, ClienteRegister clienteForm) {
+    public ResponseEntity<ClienteResponse> atualizar(Long id, ClienteRegister clienteRegister) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {
-            Cliente cliente = clienteForm.atualizar(clienteOptional.get(), clienteRepository);
+            Cliente cliente = clienteRegister.atualizar(clienteOptional.get(), clienteRepository);
             return ResponseEntity.ok(new ClienteResponse(cliente));
         }
         return ResponseEntity.notFound().build();

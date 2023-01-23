@@ -26,15 +26,15 @@ public class TransacaoService {
     private TransacaoRepository transacaoRepository;
 
     //depositar
-    public ResponseEntity<SacarDepositarResponse> depositar(DepositarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> depositar(DepositarRegister depositarRegister,
                                                             UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaDepositar()));
+        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(depositarRegister.numeroContaDepositar()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
-            conta.setSaldo(conta.getSaldo().add(sacarDepositarForm.valorTransferir()));
+            conta.setSaldo(conta.getSaldo().add(depositarRegister.valorTransferir()));
             contaRepository.save(conta);
 
-            Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.DEPOSITAR, sacarDepositarForm.valorTransferir());
+            Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.DEPOSITAR, depositarRegister.valorTransferir());
             URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
             return ResponseEntity.created(uri).body(new SacarDepositarResponse(transacao));
         } else {
@@ -43,17 +43,17 @@ public class TransacaoService {
     }
 
     //sacar
-    public ResponseEntity<SacarDepositarResponse> sacar(SacarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> sacar(SacarRegister sacarRegister,
                                                         UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaSacar()));
+        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarRegister.numeroContaSacar()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
 
-            if (((sacarDepositarForm.valorTransferir().compareTo(conta.getSaldo())) < 0)) {
-                conta.setSaldo(conta.getSaldo().subtract(sacarDepositarForm.valorTransferir()));
+            if (((sacarRegister.valorTransferir().compareTo(conta.getSaldo())) < 0)) {
+                conta.setSaldo(conta.getSaldo().subtract(sacarRegister.valorTransferir()));
                 contaRepository.save(conta);
 
-                Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.SACAR, sacarDepositarForm.valorTransferir());
+                Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.SACAR, sacarRegister.valorTransferir());
                 URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
                 return ResponseEntity.created(uri).body(new SacarDepositarResponse(transacao));
             } else {
@@ -65,21 +65,21 @@ public class TransacaoService {
     }
 
     //transferir
-    public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirForm, UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOptionalOperadora = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
-        Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaReceber()));
+    public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirRegister, UriComponentsBuilder uriBuilder) throws Exception {
+        Optional<Conta> contaOptionalOperadora = contaRepository.findByNumero(Long.valueOf(transferirRegister.numeroContaTransferir()));
+        Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirRegister.numeroContaReceber()));
         if ((contaOptionalOperadora.isPresent()) && (contaOptionalDestino.isPresent())) {
             Conta contaOperadora = contaOptionalOperadora.get();
             Conta contaDestino = contaOptionalDestino.get();
 
-            if (((transferirForm.valorTransferir().compareTo(contaOperadora.getSaldo())) < 0)) {
-                contaOperadora.setSaldo(contaOperadora.getSaldo().subtract(transferirForm.valorTransferir()));
-                contaDestino.setSaldo(contaDestino.getSaldo().add(transferirForm.valorTransferir()));
+            if (((transferirRegister.valorTransferir().compareTo(contaOperadora.getSaldo())) < 0)) {
+                contaOperadora.setSaldo(contaOperadora.getSaldo().subtract(transferirRegister.valorTransferir()));
+                contaDestino.setSaldo(contaDestino.getSaldo().add(transferirRegister.valorTransferir()));
                 contaRepository.save(contaOperadora);
                 contaRepository.save(contaDestino);
 
                  Transacao transacao = salvarTransferencia(contaOperadora, contaDestino, TipoOperacao.TRANSFERIR,
-                        transferirForm.valorTransferir());
+                        transferirRegister.valorTransferir());
                 URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
                 return ResponseEntity.created(uri).body(new TransferirResponse(transacao));
             } else {

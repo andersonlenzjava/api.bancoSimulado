@@ -41,15 +41,15 @@ public class ClienteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ClienteResponse> cadastrar(@RequestBody @Valid ClienteRegister clienteForm,
+    public ResponseEntity<ClienteResponse> cadastrar(@RequestBody @Valid ClienteRegister clienteRegister,
                                                 UriComponentsBuilder uriBuilder) throws Exception {
-        return clienteService.cadastrarCliente(clienteForm, uriBuilder);
+        return clienteService.cadastrarCliente(clienteRegister, uriBuilder);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ClienteResponse> atualizar(@PathVariable Long id, @RequestBody @Valid ClienteRegister clienteForm) {
-        return clienteService.atualizar(id, clienteForm);
+    public ResponseEntity<ClienteResponse> atualizar(@PathVariable Long id, @RequestBody @Valid ClienteRegister clienteRegister) {
+        return clienteService.atualizar(id, clienteRegister);
     }
 
     @DeleteMapping("/{id}")

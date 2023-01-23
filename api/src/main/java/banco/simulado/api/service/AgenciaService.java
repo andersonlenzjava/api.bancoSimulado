@@ -4,7 +4,6 @@ import banco.simulado.api.domain.Agencia.Agencia;
 import banco.simulado.api.domain.Agencia.AgenciaRegister;
 import banco.simulado.api.domain.Agencia.AgenciaRepository;
 import banco.simulado.api.domain.Agencia.AgenciaResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,9 +41,9 @@ public class AgenciaService {
     }
 
     //cadastrar
-    public ResponseEntity<AgenciaResponse> cadastrarAgencia(AgenciaRegister agenciaForm,
+    public ResponseEntity<AgenciaResponse> cadastrarAgencia(AgenciaRegister agenciaRegister,
                                                        UriComponentsBuilder uriBuilder) throws Exception {
-        Agencia agencia = agenciaForm.converter();
+        Agencia agencia = agenciaRegister.converter();
         Optional<Agencia> agenciaOptional = agenciaRepository.findByNomeAndNumeroAndNumeroPredio(agencia.getNome(),
                 agencia.getNumero(), agencia.getNumeroPredio());
         if (agenciaOptional.isEmpty()) {
@@ -57,16 +56,16 @@ public class AgenciaService {
     }
 
     //atualizar
-    public ResponseEntity<AgenciaResponse> atualizarAgencia(Long id, AgenciaRegister agenciaForm,
+    public ResponseEntity<AgenciaResponse> atualizarAgencia(Long id, AgenciaRegister agenciaRegister,
                                                        UriComponentsBuilder uriBuilder)  {
         Optional<Agencia> agenciaOptional = agenciaRepository.findById(id);
         if(agenciaOptional.isPresent()) {
             Agencia agencia = agenciaOptional.get();
-            agencia.setCep(agenciaForm.cep());
-            agencia.setNome(agenciaForm.nome());
-            agencia.setNumero(agenciaForm.numero());
-            agencia.setNumeroPredio(agenciaForm.numeroPredio());
-            agencia.setRua(agenciaForm.rua());
+            agencia.setCep(agenciaRegister.cep());
+            agencia.setNome(agenciaRegister.nome());
+            agencia.setNumero(agenciaRegister.numero());
+            agencia.setNumeroPredio(agenciaRegister.numeroPredio());
+            agencia.setRua(agenciaRegister.rua());
 
             return ResponseEntity.ok(new AgenciaResponse(agencia));
         }

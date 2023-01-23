@@ -34,15 +34,15 @@ public class ContaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ContaResponse> cadastrar(@RequestBody @Valid ContaRegister contaForm,
+    public ResponseEntity<ContaResponse> cadastrar(@RequestBody @Valid ContaRegister contaRegister,
                                               UriComponentsBuilder uriBuilder) throws Exception {
-        return contaService.cadastrarConta(contaForm, uriBuilder);
+        return contaService.cadastrarConta(contaRegister, uriBuilder);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ContaResponse> atualizar(@PathVariable Long id, @RequestBody @Valid ContaRegister contaForm) throws Exception {
-        return contaService.atualizar(id, contaForm);
+    public ResponseEntity<ContaResponse> atualizar(@PathVariable Long id, @RequestBody @Valid ContaRegister contaRegister) throws Exception {
+        return contaService.atualizar(id, contaRegister);
     }
 
     @DeleteMapping("/{id}")

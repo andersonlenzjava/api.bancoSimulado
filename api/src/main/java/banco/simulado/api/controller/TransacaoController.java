@@ -24,23 +24,23 @@ public class TransacaoController {
 
     @PostMapping("/depositar")
     @Transactional
-    public ResponseEntity<SacarDepositarResponse> depositar(@RequestBody DepositarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> depositar(@RequestBody DepositarRegister depositarRegister,
                                                             UriComponentsBuilder uriBuilder) throws Exception {
-        return transacaoService.depositar(sacarDepositarForm, uriBuilder);
+        return transacaoService.depositar(depositarRegister, uriBuilder);
     }
 
     @PostMapping("/sacar")
     @Transactional
-    public ResponseEntity<SacarDepositarResponse> sacar(@RequestBody @Valid SacarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> sacar(@RequestBody @Valid SacarRegister sacarRegister,
                                                    UriComponentsBuilder uriBuilder) throws Exception {
-        return transacaoService.sacar(sacarDepositarForm, uriBuilder);
+        return transacaoService.sacar(sacarRegister, uriBuilder);
     }
 
     @PostMapping("/transferir")
     @Transactional
-    public ResponseEntity<TransferirResponse> transferir(@RequestBody @Valid TransferirRegister transferirForm,
+    public ResponseEntity<TransferirResponse> transferir(@RequestBody @Valid TransferirRegister transferirRegister,
                                                          UriComponentsBuilder uriBuilder) throws Exception {
-        return transacaoService.transferir(transferirForm, uriBuilder);
+        return transacaoService.transferir(transferirRegister, uriBuilder);
     }
 
     //retorna as transacoes por numero da conta

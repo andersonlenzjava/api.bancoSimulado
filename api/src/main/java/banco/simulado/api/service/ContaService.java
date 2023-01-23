@@ -53,11 +53,11 @@ public class ContaService {
     }
 
     // cadastrar
-    public ResponseEntity<ContaResponse> cadastrarConta(ContaRegister contaForm, UriComponentsBuilder uriBuilder)
+    public ResponseEntity<ContaResponse> cadastrarConta(ContaRegister contaRegister, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Optional<Conta> contaOptional = contaRepository.findByNumero(Long.valueOf(contaForm.numero()));
+        Optional<Conta> contaOptional = contaRepository.findByNumero(Long.valueOf(contaRegister.numero()));
         if (contaOptional.isEmpty()) {
-            Conta conta = contaForm.converter(agenciaRepository, gerenteRepository, clienteRepository);
+            Conta conta = contaRegister.converter(agenciaRepository, gerenteRepository, clienteRepository);
             contaRepository.save(conta);
             URI uri = uriBuilder.path("/conta/{id}").buildAndExpand(conta.getId()).toUri();
             return ResponseEntity.created(uri).body(new ContaResponse(conta));
@@ -67,10 +67,10 @@ public class ContaService {
     }
 
     // atualizar
-    public ResponseEntity<ContaResponse> atualizar(Long id, ContaRegister contaForm) throws Exception {
+    public ResponseEntity<ContaResponse> atualizar(Long id, ContaRegister contaRegister) throws Exception {
         Optional<Conta> contaOptional = contaRepository.findById(id);
         if (contaOptional.isPresent()) {
-            Conta conta = contaForm.atualizar(contaOptional.get(), agenciaRepository);
+            Conta conta = contaRegister.atualizar(contaOptional.get(), agenciaRepository);
             return ResponseEntity.ok(new ContaResponse(conta));
         }
         return ResponseEntity.notFound().build();

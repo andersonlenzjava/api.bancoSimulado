@@ -34,15 +34,15 @@ public class GerenteController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<GerenteResponse> cadastrar(@RequestBody @Valid GerenteRegister gerenteForm,
+    public ResponseEntity<GerenteResponse> cadastrar(@RequestBody @Valid GerenteRegister gerenteRegister,
                                                 UriComponentsBuilder uriBuilder) throws Exception {
-        return gerenteService.cadastrarGerente(gerenteForm, uriBuilder);
+        return gerenteService.cadastrarGerente(gerenteRegister, uriBuilder);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<GerenteResponse> atualizar(@PathVariable Long id, @RequestBody @Valid GerenteRegister gerenteForm) throws Exception {
-        return gerenteService.atualizar(id, gerenteForm);
+    public ResponseEntity<GerenteResponse> atualizar(@PathVariable Long id, @RequestBody @Valid GerenteRegister gerenteRegister) throws Exception {
+        return gerenteService.atualizar(id, gerenteRegister);
     }
 
     @DeleteMapping("/{id}")

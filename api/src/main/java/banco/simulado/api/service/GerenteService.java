@@ -45,9 +45,9 @@ public class GerenteService {
     }
 
     // cadastrar
-    public ResponseEntity<GerenteResponse> cadastrarGerente(GerenteRegister gerenteForm, UriComponentsBuilder uriBuilder)
+    public ResponseEntity<GerenteResponse> cadastrarGerente(GerenteRegister gerenteRegister, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Gerente gerente = gerenteForm.converter(agenciaRepository);
+        Gerente gerente = gerenteRegister.converter(agenciaRepository);
         Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeOrPessoaCpf(gerente.getPessoa().getNome(),
                 gerente.getPessoa().getCpf());
         if (gerenteOptional.isEmpty()) {
@@ -60,10 +60,10 @@ public class GerenteService {
     }
 
     // atualizar
-    public ResponseEntity<GerenteResponse> atualizar(Long id, GerenteRegister gerenteForm) throws Exception {
+    public ResponseEntity<GerenteResponse> atualizar(Long id, GerenteRegister gerenteRegister) throws Exception {
         Optional<Gerente> optionalGerente = gerenteRepository.findById(id);
         if (optionalGerente.isPresent()) {
-            Gerente gerente = gerenteForm.atualizar(optionalGerente.get(), agenciaRepository);
+            Gerente gerente = gerenteRegister.atualizar(optionalGerente.get(), agenciaRepository);
             return ResponseEntity.ok(new GerenteResponse(gerente));
         }
         return ResponseEntity.notFound().build();

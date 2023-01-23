@@ -34,16 +34,16 @@ public class AgenciaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<AgenciaResponse> cadastrar(@RequestBody @Valid AgenciaRegister agenciaForm,
+    public ResponseEntity<AgenciaResponse> cadastrar(@RequestBody @Valid AgenciaRegister agenciaRegister,
                                                 UriComponentsBuilder uriBuilder) throws Exception {
-        return agenciaService.cadastrarAgencia(agenciaForm, uriBuilder);
+        return agenciaService.cadastrarAgencia(agenciaRegister, uriBuilder);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<AgenciaResponse> atualizar(@PathVariable Long id, @RequestBody @Valid AgenciaRegister agenciaForm,
+    public ResponseEntity<AgenciaResponse> atualizar(@PathVariable Long id, @RequestBody @Valid AgenciaRegister agenciaRegister,
                                                 UriComponentsBuilder uriBuilder) throws Exception {
-        return agenciaService.atualizarAgencia(id, agenciaForm, uriBuilder);
+        return agenciaService.atualizarAgencia(id, agenciaRegister, uriBuilder);
     }
 
     @DeleteMapping("/{id}")
