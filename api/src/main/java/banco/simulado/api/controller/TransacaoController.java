@@ -1,9 +1,6 @@
 package banco.simulado.api.controller;
 
-import banco.simulado.api.domain.Transacao.SacarDepositarRegister;
-import banco.simulado.api.domain.Transacao.SacarDepositarResponse;
-import banco.simulado.api.domain.Transacao.TransferirResponse;
-import banco.simulado.api.domain.Transacao.TransferirRegister;
+import banco.simulado.api.domain.Transacao.*;
 import banco.simulado.api.service.TransacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +24,14 @@ public class TransacaoController {
 
     @PostMapping("/depositar")
     @Transactional
-    public ResponseEntity<SacarDepositarResponse> depositar(@RequestBody @Valid SacarDepositarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> depositar(@RequestBody DepositarRegister sacarDepositarForm,
                                                             UriComponentsBuilder uriBuilder) throws Exception {
         return transacaoService.depositar(sacarDepositarForm, uriBuilder);
     }
 
     @PostMapping("/sacar")
     @Transactional
-    public ResponseEntity<SacarDepositarResponse> sacar(@RequestBody @Valid SacarDepositarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> sacar(@RequestBody @Valid SacarRegister sacarDepositarForm,
                                                    UriComponentsBuilder uriBuilder) throws Exception {
         return transacaoService.sacar(sacarDepositarForm, uriBuilder);
     }

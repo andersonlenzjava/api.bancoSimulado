@@ -26,9 +26,9 @@ public class TransacaoService {
     private TransacaoRepository transacaoRepository;
 
     //depositar
-    public ResponseEntity<SacarDepositarResponse> depositar(SacarDepositarRegister sacarDepositarForm,
+    public ResponseEntity<SacarDepositarResponse> depositar(DepositarRegister sacarDepositarForm,
                                                             UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaTransferir()));
+        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaDepositar()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
             conta.setSaldo(conta.getSaldo().add(sacarDepositarForm.valorTransferir()));
@@ -43,9 +43,9 @@ public class TransacaoService {
     }
 
     //sacar
-    public ResponseEntity<SacarDepositarResponse> sacar(SacarDepositarRegister sacarDepositarForm,
-                                                   UriComponentsBuilder uriBuilder) throws Exception {
-        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaTransferir()));
+    public ResponseEntity<SacarDepositarResponse> sacar(SacarRegister sacarDepositarForm,
+                                                        UriComponentsBuilder uriBuilder) throws Exception {
+        Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(sacarDepositarForm.numeroContaSacar()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
 
@@ -65,10 +65,9 @@ public class TransacaoService {
     }
 
     //transferir
-    public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirForm, UriComponentsBuilder uriBuilder)
-            throws Exception {
+    public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirForm, UriComponentsBuilder uriBuilder) throws Exception {
         Optional<Conta> contaOptionalOperadora = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
-        Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
+        Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaReceber()));
         if ((contaOptionalOperadora.isPresent()) && (contaOptionalDestino.isPresent())) {
             Conta contaOperadora = contaOptionalOperadora.get();
             Conta contaDestino = contaOptionalDestino.get();

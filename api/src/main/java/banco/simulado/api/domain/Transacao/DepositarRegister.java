@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public record SacarDepositarRegister(
+public record DepositarRegister(
 
         @NotNull
         @NotEmpty
-        String numeroContaTransferir,
+        String numeroContaDepositar,
 
         @Positive
         @NotNull
