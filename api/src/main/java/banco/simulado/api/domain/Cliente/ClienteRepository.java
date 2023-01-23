@@ -10,10 +10,16 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    Page<Cliente> findByNome(String nomeCliente, Pageable paginacao);
+    Page<Cliente> findByPessoaNome(String nomeCliente, Pageable paginacao);
 
-    Optional<Cliente> findByNomeOrCpf(String nome, String cpf);
+    Optional<Cliente> findByPessoaNomeOrPessoaCpf(String nome, String cpf);
 
-    Optional<Cliente> findByCpf(String cpfCliente);
+    Optional<Cliente> findByPessoaCpf(String cpfCliente);
+
+//    Page<Cliente> findByNome(String nomeCliente, Pageable paginacao);
+//
+//    Optional<Cliente> findByNomeOrCpf(String nome, String cpf);
+//
+//    Optional<Cliente> findByCpf(String cpfCliente);
 
 }

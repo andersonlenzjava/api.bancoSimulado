@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -34,7 +35,8 @@ public class TransacaoService {
             contaRepository.save(conta);
 
             Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.DEPOSITAR, sacarDepositarForm.valorTransferir());
-            return ResponseEntity.ok(new SacarDepositarResponse(transacao));
+            URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
+            return ResponseEntity.created(uri).body(new SacarDepositarResponse(transacao));
         } else {
             throw new Exception("Conta inestitente!");
         }
@@ -52,7 +54,8 @@ public class TransacaoService {
                 contaRepository.save(conta);
 
                 Transacao transacao = salvarTransferencia(conta, conta, TipoOperacao.SACAR, sacarDepositarForm.valorTransferir());
-                return ResponseEntity.ok(new SacarDepositarResponse(transacao));
+                URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
+                return ResponseEntity.created(uri).body(new SacarDepositarResponse(transacao));
             } else {
                 throw new Exception("Saldo insuficiente!");
             }
@@ -64,8 +67,7 @@ public class TransacaoService {
     //transferir
     public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirForm, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Optional<Conta> contaOptionalOperadora = contaRepository
-                .findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
+        Optional<Conta> contaOptionalOperadora = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
         Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirForm.numeroContaTransferir()));
         if ((contaOptionalOperadora.isPresent()) && (contaOptionalDestino.isPresent())) {
             Conta contaOperadora = contaOptionalOperadora.get();
@@ -79,7 +81,8 @@ public class TransacaoService {
 
                  Transacao transacao = salvarTransferencia(contaOperadora, contaDestino, TipoOperacao.TRANSFERIR,
                         transferirForm.valorTransferir());
-                return ResponseEntity.ok(new TransferirResponse(transacao));
+                URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
+                return ResponseEntity.created(uri).body(new TransferirResponse(transacao));
             } else {
                 throw new Exception("Saldo insuficiente!");
             }

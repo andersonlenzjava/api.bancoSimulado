@@ -30,7 +30,7 @@ public class GerenteService {
             Page<Gerente> gerentes = gerenteRepository.findAll(paginacao);
             return GerenteResponse.converter(gerentes);
         } else {
-            Page<Gerente> gerentes = gerenteRepository.findByNome(nomeGerente, paginacao);
+            Page<Gerente> gerentes = gerenteRepository.findByPessoaNome(nomeGerente, paginacao);
             return GerenteResponse.converter(gerentes);
         }
     }
@@ -48,7 +48,7 @@ public class GerenteService {
     public ResponseEntity<GerenteResponse> cadastrarGerente(GerenteRegister gerenteForm, UriComponentsBuilder uriBuilder)
             throws Exception {
         Gerente gerente = gerenteForm.converter(agenciaRepository);
-        Optional<Gerente> gerenteOptional = gerenteRepository.findByNomeOrCpf(gerente.getPessoa().getNome(),
+        Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeOrPessoaCpf(gerente.getPessoa().getNome(),
                 gerente.getPessoa().getCpf());
         if (gerenteOptional.isEmpty()) {
             gerenteRepository.save(gerente);

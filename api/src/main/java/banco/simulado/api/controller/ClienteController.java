@@ -29,8 +29,9 @@ public class ClienteController {
     }
 
     @GetMapping("/contas/{id}")
-    public Page<ContaResponse> listarContasUsuario(@PathVariable Long id) throws Exception {
-        return clienteService.listarContasUsuario(id);
+    public Page<ContaResponse> listarContasUsuario(@PathVariable Long id,
+                                                   @PageableDefault(sort = "id", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) throws Exception {
+        return clienteService.listarContasUsuario(id, paginacao);
     }
 
     @GetMapping("/{id}")

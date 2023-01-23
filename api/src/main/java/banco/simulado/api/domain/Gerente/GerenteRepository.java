@@ -10,12 +10,20 @@ import java.util.Optional;
 @Repository
 public interface GerenteRepository extends JpaRepository<Gerente, Long> {
 
-    Page<Gerente> findByNome(String nomeGerente, Pageable paginacao);
+    Page<Gerente> findByPessoaNome(String nomeGerente, Pageable paginacao);
 
-    Optional<Gerente> findByNomeOrCpf(String nome, String cpf);
+    Optional<Gerente> findByPessoaNomeOrPessoaCpf(String nome, String cpf);
 
-    Optional<Gerente> findByCpf(String gerenteCpf);
+    Optional<Gerente> findByPessoaCpf(String gerenteCpf);
 
-    Optional<Gerente> findByNomeAndCpf(String gerenteNome, String gerenteCpf);
+//    Optional<Gerente> findByNomeAndCpf(String gerenteNome, String gerenteCpf);
+
+//    Page<Gerente> findByNome(String nomeGerente, Pageable paginacao);
+//
+//    Optional<Gerente> findByNomeOrCpf(String nome, String cpf);
+//
+//    Optional<Gerente> findByCpf(String gerenteCpf);
+//
+//    Optional<Gerente> findByNomeAndCpf(String gerenteNome, String gerenteCpf);
 
 }

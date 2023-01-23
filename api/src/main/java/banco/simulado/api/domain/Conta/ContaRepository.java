@@ -15,6 +15,6 @@ public interface ContaRepository extends JpaRepository<Conta, Long> {
 
     Optional<Conta> findByNumero(Long numero);
 
-    Page<Conta> findByCliente(Cliente cliente);
+    Page<Conta> findByCliente(Cliente cliente, Pageable paginacao);
 
 }

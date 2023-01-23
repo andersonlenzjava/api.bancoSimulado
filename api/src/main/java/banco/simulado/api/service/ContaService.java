@@ -55,7 +55,7 @@ public class ContaService {
     // cadastrar
     public ResponseEntity<ContaResponse> cadastrarConta(ContaRegister contaForm, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Optional<Conta> contaOptional = contaRepository.findByNumero(contaForm.numero());
+        Optional<Conta> contaOptional = contaRepository.findByNumero(Long.valueOf(contaForm.numero()));
         if (contaOptional.isEmpty()) {
             Conta conta = contaForm.converter(agenciaRepository, gerenteRepository, clienteRepository);
             contaRepository.save(conta);

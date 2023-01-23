@@ -1,4 +1,4 @@
-package lanchonete.desafio.api;
+package banco.simulado.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -33,17 +33,17 @@ public class ClienteService {
             Page<Cliente> clientes = clienteRepository.findAll(paginacao);
             return ClienteResponse.converter(clientes);
         } else {
-            Page<Cliente> clientes = clienteRepository.findByNome(nomeCliente, paginacao);
+            Page<Cliente> clientes = clienteRepository.findByPessoaNome(nomeCliente, paginacao);
             return ClienteResponse.converter(clientes);
         }
     }
 
     // retornar contas do usuário
-    public Page<ContaResponse> listarContasUsuario(Long id) throws Exception {
+    public Page<ContaResponse> listarContasUsuario(Long id, Pageable paginacao) throws Exception {
         Optional<Cliente> optinalCliente = clienteRepository.findById(id);
         if (optinalCliente.isPresent()) {
             Cliente cliente = optinalCliente.get();
-            Page<Conta> contas = contaRepository.findByCliente(cliente);
+            Page<Conta> contas = contaRepository.findByCliente(cliente, paginacao);
             return ContaResponse.converter(contas);
         } else {
             throw new Exception("Cliente não existente");
@@ -63,7 +63,7 @@ public class ClienteService {
     public ResponseEntity<ClienteResponse> cadastrarCliente(@Valid ClienteRegister clienteForm, UriComponentsBuilder uriBuilder)
             throws Exception {
         Cliente cliente = clienteForm.converter();
-        Optional<Cliente> clienteOptional = clienteRepository.findByNomeOrCpf(cliente.getPessoa().getNome(),
+        Optional<Cliente> clienteOptional = clienteRepository.findByPessoaNomeOrPessoaCpf(cliente.getPessoa().getNome(),
                 cliente.getPessoa().getCpf());
         if (clienteOptional.isEmpty()) {
             System.out.println("teste");

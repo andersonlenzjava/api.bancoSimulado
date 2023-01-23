@@ -16,7 +16,10 @@ import java.util.Optional;
 
 public record ContaRegister(
 
-        Long numero,
+        @NotEmpty
+        @NotNull
+        @Length(min = 5, max = 5)
+        String numero,
 
         @NotNull
         BigDecimal saldo,
@@ -40,14 +43,14 @@ public record ContaRegister(
         public Conta converter(AgenciaRepository agenciaRepository,
                                GerenteRepository gerenteRepository, ClienteRepository clienteRepository) throws Exception {
                 Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(agenciaNumero);
-                Optional<Gerente> optionalGerente = gerenteRepository.findByCpf(cpfGerente);
-                Optional<Cliente> optionalCliente = clienteRepository.findByCpf(cpfCliente);
+                Optional<Gerente> optionalGerente = gerenteRepository.findByPessoaCpf(cpfGerente);
+                Optional<Cliente> optionalCliente = clienteRepository.findByPessoaCpf(cpfCliente);
 
                 if (optionalAgencia.isPresent() && optionalGerente.isPresent() && optionalCliente.isPresent()) {
                         Agencia agencia = optionalAgencia.get();
                         Gerente gerente = optionalGerente.get();
                         Cliente cliente = optionalCliente.get();
-                        return new Conta(numero, saldo, tipoConta, agencia, gerente, cliente);
+                        return new Conta(Long.valueOf(numero), saldo, tipoConta, agencia, gerente, cliente);
                 } else {
                         throw new Exception("Agencia, Gerente ou Cliente não encontrada");
                 }
@@ -57,7 +60,7 @@ public record ContaRegister(
                 Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(agenciaNumero);
                 if (optionalAgencia.isPresent()) {
                         Agencia agencia = optionalAgencia.get();
-                        conta.setNumero(numero);
+                        conta.setNumero(Long.valueOf(numero));
                         conta.setSaldo(saldo);
                         conta.setTipoConta(tipoConta);
                         conta.setAgencia(agencia);
