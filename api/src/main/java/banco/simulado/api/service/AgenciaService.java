@@ -4,6 +4,8 @@ import banco.simulado.api.domain.Agencia.Agencia;
 import banco.simulado.api.domain.Agencia.AgenciaRegister;
 import banco.simulado.api.domain.Agencia.AgenciaRepository;
 import banco.simulado.api.domain.Agencia.AgenciaResponse;
+import banco.simulado.api.infra.exeption.ItemJaExisteException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +53,7 @@ public class AgenciaService {
             URI uri = uriBuilder.path("/agencias/{id}").buildAndExpand(agencia.getId()).toUri();
             return ResponseEntity.created(uri).body(new AgenciaResponse(agencia));
         } else {
-            throw new Exception("Agencia já existe");
+            throw new ItemJaExisteException("Agencia já existe");
         }
     }
 

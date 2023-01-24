@@ -17,27 +17,26 @@ public class TratadorDeErros {
 
 //    ===============================================================================================================
 
+    // tratar erros de validação // mais de um por isto uma lista
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity tratarErro400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
-
         return ResponseEntity.badRequest().body(erros.stream().map(DadosErroValidacao::new).toList());
     }
 
-    // pega a minha exception e joga no corpo da requisição este erro
-//    @ExceptionHandler(ItemJaExisteException.class)
-//    public ResponseEntity tratarError400(ItemJaExisteException ex){
-//        var erros = ex.getMessage();
-//        return ResponseEntity.badRequest().body(erros);
-//    }
-//
-//    // pega a minha exception e joga no corpo da requisição este erro
-//    @ExceptionHandler(ValorPagoInsuficienteException.class)
-//    public ResponseEntity tratarError400(ValorPagoInsuficienteException ex){
-//        var erros = ex.getMessage();
-//        return ResponseEntity.badRequest().body(erros);
-//    }
+//     pega a minha exception e joga no corpo da requisição este erro
+    @ExceptionHandler(ItemJaExisteException.class)
+    public ResponseEntity tratarError400Existe(ItemJaExisteException ex){
+        var erros = ex.getMessage();
+        return ResponseEntity.badRequest().body(erros);
+    }
 
+    //     pega a minha exception e joga no corpo da requisição este erro
+    @ExceptionHandler(SaldoInsuficienteException.class)
+    public ResponseEntity tratarError400Insuficiente(SaldoInsuficienteException ex){
+        var erros = ex.getMessage();
+        return ResponseEntity.badRequest().body(erros);
+    }
 
     private record DadosErroValidacao(String campo, String mensagem) {
         public DadosErroValidacao(FieldError erro) { // construtor para o map

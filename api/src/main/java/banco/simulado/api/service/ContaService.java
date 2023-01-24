@@ -7,6 +7,7 @@ import banco.simulado.api.domain.Conta.ContaRegister;
 import banco.simulado.api.domain.Conta.ContaRepository;
 import banco.simulado.api.domain.Conta.ContaResponse;
 import banco.simulado.api.domain.Gerente.GerenteRepository;
+import banco.simulado.api.infra.exeption.ItemJaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,7 +63,7 @@ public class ContaService {
             URI uri = uriBuilder.path("/conta/{id}").buildAndExpand(conta.getId()).toUri();
             return ResponseEntity.created(uri).body(new ContaResponse(conta));
         } else {
-            throw new Exception("Conta já existe");
+            throw new ItemJaExisteException("Conta já existe");
         }
     }
 

@@ -7,6 +7,7 @@ import banco.simulado.api.domain.Cliente.ClienteResponse;
 import banco.simulado.api.domain.Conta.Conta;
 import banco.simulado.api.domain.Conta.ContaRepository;
 import banco.simulado.api.domain.Conta.ContaResponse;
+import banco.simulado.api.infra.exeption.ItemJaExisteException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -71,7 +72,7 @@ public class ClienteService {
             URI uri = uriBuilder.path("/gerentes/{id}").buildAndExpand(cliente.getId()).toUri();
             return ResponseEntity.created(uri).body(new ClienteResponse(cliente));
         } else {
-            throw new Exception("Cliente já existe");
+            throw new ItemJaExisteException("Cliente já existe");
         }
     }
 

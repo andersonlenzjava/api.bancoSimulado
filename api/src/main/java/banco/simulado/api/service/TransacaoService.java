@@ -4,6 +4,7 @@ import banco.simulado.api.domain.Conta.Conta;
 import banco.simulado.api.domain.Conta.ContaRepository;
 import banco.simulado.api.domain.TipoOperacao.TipoOperacao;
 import banco.simulado.api.domain.Transacao.*;
+import banco.simulado.api.infra.exeption.SaldoInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,8 @@ public class TransacaoService {
             URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
             return ResponseEntity.created(uri).body(new SacarDepositarResponse(transacao));
         } else {
-            throw new Exception("Conta inestitente!");
+            return ResponseEntity.notFound().build();
+//            throw new Exception("Conta inestitente!");
         }
     }
 
@@ -57,10 +59,10 @@ public class TransacaoService {
                 URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
                 return ResponseEntity.created(uri).body(new SacarDepositarResponse(transacao));
             } else {
-                throw new Exception("Saldo insuficiente!");
+                throw new SaldoInsuficienteException("Saldo insuficiente!");
             }
         } else {
-            throw new Exception("Conta inestitente!");
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -83,10 +85,10 @@ public class TransacaoService {
                 URI uri = uriBuilder.path("/transacao/{id}").buildAndExpand(transacao.getId()).toUri();
                 return ResponseEntity.created(uri).body(new TransferirResponse(transacao));
             } else {
-                throw new Exception("Saldo insuficiente!");
+                 throw new SaldoInsuficienteException("Saldo insuficiente!");
             }
         } else {
-            throw new Exception("Alguma conta inestitente!");
+            return ResponseEntity.notFound().build();
         }
     }
 

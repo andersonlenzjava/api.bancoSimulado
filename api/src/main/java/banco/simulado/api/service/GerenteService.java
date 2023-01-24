@@ -5,6 +5,7 @@ import banco.simulado.api.domain.Gerente.Gerente;
 import banco.simulado.api.domain.Gerente.GerenteRegister;
 import banco.simulado.api.domain.Gerente.GerenteRepository;
 import banco.simulado.api.domain.Gerente.GerenteResponse;
+import banco.simulado.api.infra.exeption.ItemJaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,7 +56,7 @@ public class GerenteService {
             URI uri = uriBuilder.path("/gerentes/{id}").buildAndExpand(gerente.getId()).toUri();
             return ResponseEntity.created(uri).body(new GerenteResponse(gerente));
         } else {
-            throw new Exception("Gerente já existe");
+            throw new ItemJaExisteException("Gerente já existe");
         }
     }
 
