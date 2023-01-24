@@ -142,6 +142,8 @@ public class TransacaoService {
         }
     }
 
+//    ---------------------------------------------------------------------------------------
+
     //Auxiliar -- salvarTransferencia
     public Transacao salvarTransferencia(Conta contaOperadora, Conta contaDestino, TipoOperacao tipoOperacao,
                                     BigDecimal valor) {

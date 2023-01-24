@@ -1,8 +1,5 @@
 package banco.simulado.api.domain.Gerente;
 
-import banco.simulado.api.domain.Agencia.Agencia;
-import banco.simulado.api.domain.Cliente.Cliente;
-import banco.simulado.api.domain.Cliente.ClienteResponse;
 import banco.simulado.api.domain.StatusTrabalho.StatusTrabalho;
 import org.springframework.data.domain.Page;
 

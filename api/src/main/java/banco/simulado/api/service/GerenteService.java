@@ -1,5 +1,6 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Agencia.Agencia;
 import banco.simulado.api.domain.Agencia.AgenciaRepository;
 import banco.simulado.api.domain.Gerente.Gerente;
 import banco.simulado.api.domain.Gerente.GerenteRegister;
@@ -48,7 +49,8 @@ public class GerenteService {
     // cadastrar
     public ResponseEntity<GerenteResponse> cadastrarGerente(GerenteRegister gerenteRegister, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Gerente gerente = gerenteRegister.converter(agenciaRepository);
+        Gerente gerente = converterGerenteRegister(gerenteRegister);
+
         Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeOrPessoaCpf(gerente.getPessoa().getNome(),
                 gerente.getPessoa().getCpf());
         if (gerenteOptional.isEmpty()) {
@@ -64,7 +66,7 @@ public class GerenteService {
     public ResponseEntity<GerenteResponse> atualizar(Long id, GerenteRegister gerenteRegister) throws Exception {
         Optional<Gerente> optionalGerente = gerenteRepository.findById(id);
         if (optionalGerente.isPresent()) {
-            Gerente gerente = gerenteRegister.atualizar(optionalGerente.get(), agenciaRepository);
+            Gerente gerente = atualizarGerenteExistente(optionalGerente.get(), gerenteRegister);
             return ResponseEntity.ok(new GerenteResponse(gerente));
         }
         return ResponseEntity.notFound().build();
@@ -78,6 +80,37 @@ public class GerenteService {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+//    ---------------------------------------------------------------------------------------
+
+    //Auxiliar -- converterGerenteRegister para gerente
+    public Gerente converterGerenteRegister(GerenteRegister gerenteRegister) throws Exception {
+        Optional<Agencia> agenciaOptional = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
+        Gerente gerente;
+        if (agenciaOptional.isPresent()) {
+            Agencia agencia = agenciaOptional.get();
+            gerente = new Gerente(gerenteRegister.nome(), gerenteRegister.cpf(), gerenteRegister.dataNascimento(), agencia);
+            return gerente;
+        } else {
+            throw new Exception("Agência inexistente!");
+        }
+    }
+
+    //Auxiliar -- atualizar gerente existente
+    public Gerente atualizarGerenteExistente(Gerente gerente, GerenteRegister gerenteRegister) throws Exception {
+
+        Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
+        if (optionalAgencia.isPresent()) {
+            Agencia agencia = optionalAgencia.get();
+            gerente.setAgencia(agencia);
+            gerente.getPessoa().setNome(gerenteRegister.nome());
+            gerente.getPessoa().setCpf(gerenteRegister.cpf());
+            gerente.getPessoa().setDataNascimento(gerenteRegister.dataNascimento());
+            return gerente;
+        } else {
+            throw new Exception("Agência inexistente");
+        }
     }
 
 }
