@@ -2,6 +2,9 @@ package banco.simulado.api.service;
 
 import banco.simulado.api.domain.Conta.Conta;
 import banco.simulado.api.domain.Conta.ContaRepository;
+import banco.simulado.api.domain.Gerente.Gerente;
+import banco.simulado.api.domain.Gerente.GerenteDelTransacaoRegister;
+import banco.simulado.api.domain.Gerente.GerenteRepository;
 import banco.simulado.api.domain.TipoOperacao.TipoOperacao;
 import banco.simulado.api.domain.Transacao.*;
 import banco.simulado.api.infra.exeption.SaldoInsuficienteException;
@@ -22,6 +25,9 @@ public class TransacaoService {
 
     @Autowired
     private ContaRepository contaRepository;
+
+    @Autowired
+    private GerenteRepository gerenteRepository;
 
     @Autowired
     private TransacaoRepository transacaoRepository;
@@ -94,9 +100,12 @@ public class TransacaoService {
     }
 
     //deletarTransacao
-    public ResponseEntity<?> deletarTransacao(Long id) {
+    public ResponseEntity<?> deletarTransacao(GerenteDelTransacaoRegister gerenteDelTransacaoRegister, Long id) {
         Optional<Transacao> optionalTransacao = transacaoRepository.findById(id);
-        if (optionalTransacao.isPresent()) {
+        Optional<Gerente> optionalGerente =
+                gerenteRepository.findByPessoaNomeAndPessoaCpf(gerenteDelTransacaoRegister.nome(), gerenteDelTransacaoRegister.cpf());
+
+        if (optionalTransacao.isPresent() && optionalGerente.isPresent()) {
             Transacao transacao = optionalTransacao.get();
             Conta contaOperadora = transacao.getContaOperadora();
             Conta contaDestino = transacao.getContaDestino();

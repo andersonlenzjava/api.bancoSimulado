@@ -58,7 +58,7 @@ public class GerenteService {
             gerente = new Gerente(gerenteRegister.nome(), gerenteRegister.cpf(), gerenteRegister.dataNascimento(), agencia);
 
             // verificar se o gernete já existe
-            Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeOrPessoaCpf(gerente.getPessoa().getNome(),
+            Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeAndPessoaCpf(gerente.getPessoa().getNome(),
                     gerente.getPessoa().getCpf());
             if (gerenteOptional.isEmpty()) {
                 gerenteRepository.save(gerente);
@@ -73,7 +73,7 @@ public class GerenteService {
     }
 
     // atualizar
-    public ResponseEntity<GerenteResponse> atualizar(Long id, GerenteRegister gerenteRegister) throws Exception {
+    public ResponseEntity<GerenteResponse> atualizar(Long id, GerenteRegister gerenteRegister) {
 
         // se o gerente existe
         Optional<Gerente> optionalGerente = gerenteRepository.findById(id);
