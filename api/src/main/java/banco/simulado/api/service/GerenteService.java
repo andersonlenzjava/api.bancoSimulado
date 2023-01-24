@@ -49,25 +49,49 @@ public class GerenteService {
     // cadastrar
     public ResponseEntity<GerenteResponse> cadastrarGerente(GerenteRegister gerenteRegister, UriComponentsBuilder uriBuilder)
             throws Exception {
-        Gerente gerente = converterGerenteRegister(gerenteRegister);
 
-        Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeOrPessoaCpf(gerente.getPessoa().getNome(),
-                gerente.getPessoa().getCpf());
-        if (gerenteOptional.isEmpty()) {
-            gerenteRepository.save(gerente);
-            URI uri = uriBuilder.path("/gerentes/{id}").buildAndExpand(gerente.getId()).toUri();
-            return ResponseEntity.created(uri).body(new GerenteResponse(gerente));
+        // ver se a agência existe
+        Optional<Agencia> agenciaOptional = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
+        Gerente gerente;
+        if (agenciaOptional.isPresent()) {
+            Agencia agencia = agenciaOptional.get();
+            gerente = new Gerente(gerenteRegister.nome(), gerenteRegister.cpf(), gerenteRegister.dataNascimento(), agencia);
+
+            // verificar se o gernete já existe
+            Optional<Gerente> gerenteOptional = gerenteRepository.findByPessoaNomeOrPessoaCpf(gerente.getPessoa().getNome(),
+                    gerente.getPessoa().getCpf());
+            if (gerenteOptional.isEmpty()) {
+                gerenteRepository.save(gerente);
+                URI uri = uriBuilder.path("/gerentes/{id}").buildAndExpand(gerente.getId()).toUri();
+                return ResponseEntity.created(uri).body(new GerenteResponse(gerente));
+            } else {
+                throw new ItemJaExisteException("Gerente já existe");
+            }
         } else {
-            throw new ItemJaExisteException("Gerente já existe");
+            return ResponseEntity.notFound().build();
         }
     }
 
     // atualizar
     public ResponseEntity<GerenteResponse> atualizar(Long id, GerenteRegister gerenteRegister) throws Exception {
+
+        // se o gerente existe
         Optional<Gerente> optionalGerente = gerenteRepository.findById(id);
         if (optionalGerente.isPresent()) {
-            Gerente gerente = atualizarGerenteExistente(optionalGerente.get(), gerenteRegister);
-            return ResponseEntity.ok(new GerenteResponse(gerente));
+            Gerente gerente = optionalGerente.get();
+
+            // verifica se a agencia existe
+            Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
+            if (optionalAgencia.isPresent()) {
+                Agencia agencia = optionalAgencia.get();
+                gerente.setAgencia(agencia);
+                gerente.getPessoa().setNome(gerenteRegister.nome());
+                gerente.getPessoa().setCpf(gerenteRegister.cpf());
+                gerente.getPessoa().setDataNascimento(gerenteRegister.dataNascimento());
+                return ResponseEntity.ok(new GerenteResponse(gerente));
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }
@@ -81,36 +105,4 @@ public class GerenteService {
         }
         return ResponseEntity.notFound().build();
     }
-
-//    ---------------------------------------------------------------------------------------
-
-    //Auxiliar -- converterGerenteRegister para Gerente
-    public Gerente converterGerenteRegister(GerenteRegister gerenteRegister) throws Exception {
-        Optional<Agencia> agenciaOptional = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
-        Gerente gerente;
-        if (agenciaOptional.isPresent()) {
-            Agencia agencia = agenciaOptional.get();
-            gerente = new Gerente(gerenteRegister.nome(), gerenteRegister.cpf(), gerenteRegister.dataNascimento(), agencia);
-            return gerente;
-        } else {
-            throw new Exception("Agência inexistente!");
-        }
-    }
-
-    //Auxiliar -- atualizar Gerente existente
-    public Gerente atualizarGerenteExistente(Gerente gerente, GerenteRegister gerenteRegister) throws Exception {
-
-        Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
-        if (optionalAgencia.isPresent()) {
-            Agencia agencia = optionalAgencia.get();
-            gerente.setAgencia(agencia);
-            gerente.getPessoa().setNome(gerenteRegister.nome());
-            gerente.getPessoa().setCpf(gerenteRegister.cpf());
-            gerente.getPessoa().setDataNascimento(gerenteRegister.dataNascimento());
-            return gerente;
-        } else {
-            throw new Exception("Agência inexistente");
-        }
-    }
-
 }

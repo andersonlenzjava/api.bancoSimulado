@@ -70,6 +70,7 @@ public class TransacaoService {
     public ResponseEntity<TransferirResponse> transferir(TransferirRegister transferirRegister, UriComponentsBuilder uriBuilder) throws Exception {
         Optional<Conta> contaOptionalOperadora = contaRepository.findByNumero(Long.valueOf(transferirRegister.numeroContaTransferir()));
         Optional<Conta> contaOptionalDestino = contaRepository.findByNumero(Long.valueOf(transferirRegister.numeroContaReceber()));
+
         if ((contaOptionalOperadora.isPresent()) && (contaOptionalDestino.isPresent())) {
             Conta contaOperadora = contaOptionalOperadora.get();
             Conta contaDestino = contaOptionalDestino.get();

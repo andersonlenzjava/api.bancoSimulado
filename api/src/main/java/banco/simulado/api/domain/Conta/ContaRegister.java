@@ -24,10 +24,6 @@ public record ContaRegister(
 
         @NotEmpty
         @NotNull
-        String cpfGerente,
-
-        @NotEmpty
-        @NotNull
         String cpfCliente
 ) {
 }

@@ -28,16 +28,12 @@ public class Conta {
     private Agencia agencia;
 
     @ManyToOne
-    private Gerente gerente;
-
-    @ManyToOne
     private Cliente cliente;
 
-    public Conta(Long numero, TipoConta tipoConta, Agencia agencia, Gerente gerente, Cliente cliente) {
+    public Conta(Long numero, TipoConta tipoConta, Agencia agencia, Cliente cliente) {
         this.numero = numero;
         this.tipoConta = tipoConta;
         this.agencia = agencia;
-        this.gerente = gerente;
         this.cliente = cliente;
     }
 }

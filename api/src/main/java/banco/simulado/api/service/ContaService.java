@@ -31,9 +31,6 @@ public class ContaService {
     private AgenciaRepository agenciaRepository;
 
     @Autowired
-    private GerenteRepository gerenteRepository;
-
-    @Autowired
     private ClienteRepository clienteRepository;
 
     // get
@@ -59,23 +56,53 @@ public class ContaService {
     // cadastrar
     public ResponseEntity<ContaResponse> cadastrarConta(ContaRegister contaRegister, UriComponentsBuilder uriBuilder)
             throws Exception {
+        // verificar se a conta já existe
         Optional<Conta> contaOptional = contaRepository.findByNumero(Long.valueOf(contaRegister.numero()));
         if (contaOptional.isEmpty()) {
-            Conta conta = converterContaRegister(contaRegister);
-            contaRepository.save(conta);
-            URI uri = uriBuilder.path("/conta/{id}").buildAndExpand(conta.getId()).toUri();
-            return ResponseEntity.created(uri).body(new ContaResponse(conta));
+
+//          verificar se este itens existe
+            Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(contaRegister.agenciaNumero());
+            Optional<Cliente> optionalCliente = clienteRepository.findByPessoaCpf(contaRegister.cpfCliente());
+
+            if (optionalAgencia.isPresent() && optionalCliente.isPresent()) {
+                Agencia agencia = optionalAgencia.get();
+                Cliente cliente = optionalCliente.get();
+                Conta conta = new Conta(Long.valueOf(contaRegister.numero()), contaRegister.tipoConta(), agencia, cliente);
+
+                contaRepository.save(conta);
+                URI uri = uriBuilder.path("/conta/{id}").buildAndExpand(conta.getId()).toUri();
+                return ResponseEntity.created(uri).body(new ContaResponse(conta));
+
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
         } else {
             throw new ItemJaExisteException("Conta já existe");
         }
     }
 
     // atualizar
-    public ResponseEntity<ContaResponse> atualizar(Long id, ContaRegister contaRegister) throws Exception {
+    public ResponseEntity<ContaResponse> atualizar(Long id, ContaRegister contaRegister) {
+
+        // verificar se a conta passada existe
         Optional<Conta> contaOptional = contaRepository.findById(id);
         if (contaOptional.isPresent()) {
-            Conta conta = atualizarContaExistente(contaOptional.get(), contaRegister);
-            return ResponseEntity.ok(new ContaResponse(conta));
+
+//          verificar se este iten existe
+            Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(contaRegister.agenciaNumero());
+            Optional<Cliente> optionalCliente = clienteRepository.findByPessoaCpf(contaRegister.cpfCliente());
+
+            if (optionalAgencia.isPresent() && optionalCliente.isPresent()) {
+
+                Conta conta = contaOptional.get();
+                conta.setAgencia(optionalAgencia.get());
+                conta.setNumero(Long.valueOf(contaRegister.numero()));
+                conta.setTipoConta(contaRegister.tipoConta());
+                conta.setCliente(optionalCliente.get());
+
+                return ResponseEntity.ok(new ContaResponse(conta));
+            }
         }
         return ResponseEntity.notFound().build();
     }
@@ -88,38 +115,6 @@ public class ContaService {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
-    }
-
-//    ---------------------------------------------------------------------------------------
-
-    // AUXILIAR converterContaRegister em Conta
-    public Conta converterContaRegister(ContaRegister contaRegister) throws Exception {
-        Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(contaRegister.agenciaNumero());
-        Optional<Gerente> optionalGerente = gerenteRepository.findByPessoaCpf(contaRegister.cpfGerente());
-        Optional<Cliente> optionalCliente = clienteRepository.findByPessoaCpf(contaRegister.cpfCliente());
-
-        if (optionalAgencia.isPresent() && optionalGerente.isPresent() && optionalCliente.isPresent()) {
-            Agencia agencia = optionalAgencia.get();
-            Gerente gerente = optionalGerente.get();
-            Cliente cliente = optionalCliente.get();
-            return new Conta(Long.valueOf(contaRegister.numero()), contaRegister.tipoConta(), agencia, gerente, cliente);
-        } else {
-            throw new Exception("Agencia, Gerente ou Cliente não encontrada");
-        }
-    }
-
-    // AUXILIAR -- Atualizar conta existente
-    public Conta atualizarContaExistente(Conta conta, ContaRegister contaRegister) throws Exception {
-        Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(contaRegister.agenciaNumero());
-        if (optionalAgencia.isPresent()) {
-            Agencia agencia = optionalAgencia.get();
-            conta.setNumero(Long.valueOf(contaRegister.numero()));
-            conta.setTipoConta(contaRegister.tipoConta());
-            conta.setAgencia(agencia);
-            return conta;
-        } else {
-            throw new Exception("Agencia inesistente!");
-        }
     }
 
 }
