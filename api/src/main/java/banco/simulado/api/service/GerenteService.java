@@ -84,7 +84,7 @@ public class GerenteService {
 
 //    ---------------------------------------------------------------------------------------
 
-    //Auxiliar -- converterGerenteRegister para gerente
+    //Auxiliar -- converterGerenteRegister para Gerente
     public Gerente converterGerenteRegister(GerenteRegister gerenteRegister) throws Exception {
         Optional<Agencia> agenciaOptional = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());
         Gerente gerente;
@@ -97,7 +97,7 @@ public class GerenteService {
         }
     }
 
-    //Auxiliar -- atualizar gerente existente
+    //Auxiliar -- atualizar Gerente existente
     public Gerente atualizarGerenteExistente(Gerente gerente, GerenteRegister gerenteRegister) throws Exception {
 
         Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(gerenteRegister.agenciaNumero());

@@ -66,6 +66,7 @@ public class ClienteService {
         Cliente cliente = clienteRegister.converter();
         Optional<Cliente> clienteOptional = clienteRepository.findByPessoaNomeOrPessoaCpf(cliente.getPessoa().getNome(),
                 cliente.getPessoa().getCpf());
+
         if (clienteOptional.isEmpty()) {
             System.out.println("teste");
             clienteRepository.save(cliente);
@@ -80,7 +81,13 @@ public class ClienteService {
     public ResponseEntity<ClienteResponse> atualizar(Long id, ClienteRegister clienteRegister) {
         Optional<Cliente> clienteOptional = clienteRepository.findById(id);
         if (clienteOptional.isPresent()) {
-            Cliente cliente = clienteRegister.atualizar(clienteOptional.get(), clienteRepository);
+
+            Cliente cliente = clienteOptional.get();
+            cliente.getPessoa().setNome(clienteRegister.nome());
+            cliente.getPessoa().setCpf(clienteRegister.cpf());
+            cliente.getPessoa().setDataNascimento(clienteRegister.dataNascimento());
+            clienteRepository.save(cliente);
+
             return ResponseEntity.ok(new ClienteResponse(cliente));
         }
         return ResponseEntity.notFound().build();

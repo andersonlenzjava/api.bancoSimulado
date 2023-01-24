@@ -1,11 +1,14 @@
 package banco.simulado.api.service;
 
+import banco.simulado.api.domain.Agencia.Agencia;
 import banco.simulado.api.domain.Agencia.AgenciaRepository;
+import banco.simulado.api.domain.Cliente.Cliente;
 import banco.simulado.api.domain.Cliente.ClienteRepository;
 import banco.simulado.api.domain.Conta.Conta;
 import banco.simulado.api.domain.Conta.ContaRegister;
 import banco.simulado.api.domain.Conta.ContaRepository;
 import banco.simulado.api.domain.Conta.ContaResponse;
+import banco.simulado.api.domain.Gerente.Gerente;
 import banco.simulado.api.domain.Gerente.GerenteRepository;
 import banco.simulado.api.infra.exeption.ItemJaExisteException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +61,7 @@ public class ContaService {
             throws Exception {
         Optional<Conta> contaOptional = contaRepository.findByNumero(Long.valueOf(contaRegister.numero()));
         if (contaOptional.isEmpty()) {
-            Conta conta = contaRegister.converter(agenciaRepository, gerenteRepository, clienteRepository);
+            Conta conta = converterContaRegister(contaRegister);
             contaRepository.save(conta);
             URI uri = uriBuilder.path("/conta/{id}").buildAndExpand(conta.getId()).toUri();
             return ResponseEntity.created(uri).body(new ContaResponse(conta));
@@ -71,7 +74,7 @@ public class ContaService {
     public ResponseEntity<ContaResponse> atualizar(Long id, ContaRegister contaRegister) throws Exception {
         Optional<Conta> contaOptional = contaRepository.findById(id);
         if (contaOptional.isPresent()) {
-            Conta conta = contaRegister.atualizar(contaOptional.get(), agenciaRepository);
+            Conta conta = atualizarContaExistente(contaOptional.get(), contaRegister);
             return ResponseEntity.ok(new ContaResponse(conta));
         }
         return ResponseEntity.notFound().build();
@@ -85,6 +88,38 @@ public class ContaService {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+//    ---------------------------------------------------------------------------------------
+
+    // AUXILIAR converterContaRegister em Conta
+    public Conta converterContaRegister(ContaRegister contaRegister) throws Exception {
+        Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(contaRegister.agenciaNumero());
+        Optional<Gerente> optionalGerente = gerenteRepository.findByPessoaCpf(contaRegister.cpfGerente());
+        Optional<Cliente> optionalCliente = clienteRepository.findByPessoaCpf(contaRegister.cpfCliente());
+
+        if (optionalAgencia.isPresent() && optionalGerente.isPresent() && optionalCliente.isPresent()) {
+            Agencia agencia = optionalAgencia.get();
+            Gerente gerente = optionalGerente.get();
+            Cliente cliente = optionalCliente.get();
+            return new Conta(Long.valueOf(contaRegister.numero()), contaRegister.tipoConta(), agencia, gerente, cliente);
+        } else {
+            throw new Exception("Agencia, Gerente ou Cliente não encontrada");
+        }
+    }
+
+    // AUXILIAR -- Atualizar conta existente
+    public Conta atualizarContaExistente(Conta conta, ContaRegister contaRegister) throws Exception {
+        Optional<Agencia> optionalAgencia = agenciaRepository.findByNumero(contaRegister.agenciaNumero());
+        if (optionalAgencia.isPresent()) {
+            Agencia agencia = optionalAgencia.get();
+            conta.setNumero(Long.valueOf(contaRegister.numero()));
+            conta.setTipoConta(contaRegister.tipoConta());
+            conta.setAgencia(agencia);
+            return conta;
+        } else {
+            throw new Exception("Agencia inesistente!");
+        }
     }
 
 }

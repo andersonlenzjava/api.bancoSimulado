@@ -27,13 +27,5 @@ public record ClienteRegister(
                 return new Cliente(this.nome, this.cpf, this.dataNascimento);
         }
 
-        // má pratica tirar daqui e só usar construtor
-        public Cliente atualizar(Cliente cliente, ClienteRepository clienteRepository) {
-                cliente.getPessoa().setNome(this.nome);
-                cliente.getPessoa().setCpf(this.cpf);
-                cliente.getPessoa().setDataNascimento(this.dataNascimento);
-                clienteRepository.save(cliente);
-                return cliente;
-        }
 
 }
