@@ -34,7 +34,7 @@ public class TransacaoService {
 
     //depositar
     public ResponseEntity<SacarDepositarResponse> depositar(DepositarRegister depositarRegister,
-                                                            UriComponentsBuilder uriBuilder) throws Exception {
+                                                            UriComponentsBuilder uriBuilder)  {
         Optional<Conta> contaOperadora = contaRepository.findByNumero(Long.valueOf(depositarRegister.numeroContaDepositar()));
         if (contaOperadora.isPresent()) {
             Conta conta = contaOperadora.get();
