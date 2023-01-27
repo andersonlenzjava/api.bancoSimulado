@@ -106,18 +106,25 @@ public class TransacaoService {
                 gerenteRepository.findByPessoaNomeAndPessoaCpf(gerenteDelTransacaoRegister.nome(), gerenteDelTransacaoRegister.cpf());
 
         if (optionalTransacao.isPresent() && optionalGerente.isPresent()) {
+
             Transacao transacao = optionalTransacao.get();
-            Conta contaOperadora = transacao.getContaOperadora();
-            Conta contaDestino = transacao.getContaDestino();
+            Gerente gerente = optionalGerente.get();
 
-            contaOperadora.setSaldo(contaOperadora.getSaldo().add(transacao.getValor()));
-            contaDestino.setSaldo(contaDestino.getSaldo().subtract(transacao.getValor()));
+            if ((transacao.getContaOperadora().getAgencia().getNumero()) == (gerente.getAgencia().getNumero())) {
+                Conta contaOperadora = transacao.getContaOperadora();
+                Conta contaDestino = transacao.getContaDestino();
 
-            contaRepository.save(contaOperadora);
-            contaRepository.save(contaDestino);
-            transacaoRepository.delete(transacao);
+                contaOperadora.setSaldo(contaOperadora.getSaldo().add(transacao.getValor()));
+                contaDestino.setSaldo(contaDestino.getSaldo().subtract(transacao.getValor()));
 
-            return ResponseEntity.noContent().build();
+                contaRepository.save(contaOperadora);
+                contaRepository.save(contaDestino);
+                transacaoRepository.delete(transacao);
+
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
         return ResponseEntity.notFound().build();
     }
