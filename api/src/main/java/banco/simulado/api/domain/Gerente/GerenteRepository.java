@@ -12,8 +12,7 @@ public interface GerenteRepository extends JpaRepository<Gerente, Long> {
 
     Page<Gerente> findByPessoaNome(String nomeGerente, Pageable paginacao);
 
-    Optional<Gerente> findByPessoaNomeAndPessoaCpf(String nome, String cpf);
-
-    Optional<Gerente> findByPessoaCpf(String gerenteCpf);
+    Optional<Gerente> findByPessoaNomeOrPessoaCpf(String nome, String cpf);
+    
 
 }

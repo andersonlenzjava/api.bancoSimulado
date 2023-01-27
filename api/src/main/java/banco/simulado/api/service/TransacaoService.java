@@ -104,7 +104,7 @@ public class TransacaoService {
     public ResponseEntity<?> deletarTransacao(GerenteDelTransacaoRegister gerenteDelTransacaoRegister, Long id) throws GerenteDeOutraAgenciaException {
         Optional<Transacao> optionalTransacao = transacaoRepository.findById(id);
         Optional<Gerente> optionalGerente =
-                gerenteRepository.findByPessoaNomeAndPessoaCpf(gerenteDelTransacaoRegister.nome(), gerenteDelTransacaoRegister.cpf());
+                gerenteRepository.findByPessoaNomeOrPessoaCpf(gerenteDelTransacaoRegister.nome(), gerenteDelTransacaoRegister.cpf());
 
         if (optionalTransacao.isPresent() && optionalGerente.isPresent()) {
 
