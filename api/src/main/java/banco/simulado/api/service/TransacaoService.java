@@ -7,6 +7,7 @@ import banco.simulado.api.domain.Gerente.GerenteDelTransacaoRegister;
 import banco.simulado.api.domain.Gerente.GerenteRepository;
 import banco.simulado.api.domain.TipoOperacao.TipoOperacao;
 import banco.simulado.api.domain.Transacao.*;
+import banco.simulado.api.infra.exeption.GerenteDeOutraAgenciaException;
 import banco.simulado.api.infra.exeption.SaldoInsuficienteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -100,7 +101,7 @@ public class TransacaoService {
     }
 
     //deletarTransacao
-    public ResponseEntity<?> deletarTransacao(GerenteDelTransacaoRegister gerenteDelTransacaoRegister, Long id) {
+    public ResponseEntity<?> deletarTransacao(GerenteDelTransacaoRegister gerenteDelTransacaoRegister, Long id) throws GerenteDeOutraAgenciaException {
         Optional<Transacao> optionalTransacao = transacaoRepository.findById(id);
         Optional<Gerente> optionalGerente =
                 gerenteRepository.findByPessoaNomeAndPessoaCpf(gerenteDelTransacaoRegister.nome(), gerenteDelTransacaoRegister.cpf());
@@ -122,8 +123,9 @@ public class TransacaoService {
                 transacaoRepository.delete(transacao);
 
                 return ResponseEntity.noContent().build();
+
             } else {
-                return ResponseEntity.notFound().build();
+                throw new GerenteDeOutraAgenciaException("Gerente não é desta conta");
             }
         }
         return ResponseEntity.notFound().build();

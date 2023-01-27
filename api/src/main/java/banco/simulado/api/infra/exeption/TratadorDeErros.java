@@ -38,6 +38,13 @@ public class TratadorDeErros {
         return ResponseEntity.badRequest().body(erros);
     }
 
+    @ExceptionHandler(GerenteDeOutraAgenciaException.class)
+    public ResponseEntity tratarError400Insuficiente(GerenteDeOutraAgenciaException ex){
+        var erros = ex.getMessage();
+        return ResponseEntity.badRequest().body(erros);
+    }
+
+
     private record DadosErroValidacao(String campo, String mensagem) {
         public DadosErroValidacao(FieldError erro) { // construtor para o map
             this(erro.getField(), erro.getDefaultMessage());

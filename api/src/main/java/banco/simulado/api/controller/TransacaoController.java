@@ -2,6 +2,7 @@ package banco.simulado.api.controller;
 
 import banco.simulado.api.domain.Gerente.GerenteDelTransacaoRegister;
 import banco.simulado.api.domain.Transacao.*;
+import banco.simulado.api.infra.exeption.GerenteDeOutraAgenciaException;
 import banco.simulado.api.service.TransacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class TransacaoController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity removerTransacao(@RequestBody @Valid GerenteDelTransacaoRegister gerenteDelTransacaoRegister, @PathVariable Long id) {
+    public ResponseEntity removerTransacao(@RequestBody @Valid GerenteDelTransacaoRegister gerenteDelTransacaoRegister, @PathVariable Long id) throws GerenteDeOutraAgenciaException {
         return transacaoService.deletarTransacao(gerenteDelTransacaoRegister, id);
     }
 }
