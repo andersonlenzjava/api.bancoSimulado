@@ -127,31 +127,31 @@ Para a TransacaoService foram implementados algumas regras de negócio:</br>
 
  <p>Neste momento para utilizar o sistema é necessário rodar o sistema offline dentro de alguma IDE, através do Spring Boot.</p>
    <p><strong>Etapas:</strong></p>
-     Download do projeto e descompactar </br>
-     Fazer a atualização das dependências com o Maven</br>
-     Fazer a configuração do banco de dados de sua preferência</br>
-     Criar o banco de dados </br>
-     Configurar a API a este banco de dados</br>
-     Rodar o projeto com a app.properties em spring.jpa.hibernate.ddl-auto=create</br>
-     Em seguida colocar spring.jpa.hibernate.ddl-auto=none</br>
-     Abrir a collection de endpoints com o software que gerencia requisições PostMan</br>
+     - Download do projeto e descompactar </br>
+     - Fazer a atualização das dependências com o Maven</br>
+     - Fazer a configuração do banco de dados de sua preferência</br>
+     - Criar o banco de dados </br>
+     - Configurar a API a este banco de dados</br>
+     - Rodar o projeto com a app.properties em spring.jpa.hibernate.ddl-auto=create</br>
+     - Em seguida colocar spring.jpa.hibernate.ddl-auto=none</br>
+     - Abrir a collection de endpoints com o software que gerencia requisições PostMan</br>
 
 #### Na operacionalização do sistema obedecer a seguinte sequência:
 
 Na operacionalização do sistema obedecer a seguinte sequência  na collection de endpoints junto ao arquivo do postman em anexo:</br>
 Cadastrar todas as entidades:</br>
-Agencia</br>
-Gerente</br>
-Cliente</br>
-Conta</br>
-conforme os exemplos em JSON apresentados na collection de endpoints.</br>
+- Agencia</br>
+- Gerente</br>
+- Cliente</br>
+- Conta</br>
+- conforme os exemplos em JSON apresentados na collection de endpoints.</br>
 Testar as operações de:</br>
-Sacar</br>
-Depositar</br>
-Fazer uma transferência (com duas contas criadas)</br>
-Listar as Transacoes maiores que</br>
-Listar uma transacao por um id</br>
-Deletar uma transacao (com o cpf do Gerente)</br>
+- Sacar</br>
+- Depositar</br>
+- Fazer uma transferência (com duas contas criadas)</br>
+- Listar as Transacoes maiores que</br>
+- Listar uma transacao por um id</br>
+- Deletar uma transacao (com o cpf do Gerente)</br>
 
 ## Um melhor detalhamento do uso desta API é apresentado no video deste link.
 
