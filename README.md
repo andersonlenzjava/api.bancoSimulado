@@ -52,7 +52,7 @@ O sistema permite deletar uma transação, para isto é necessário informar uma
 
 - [x] Modelagem do diagrama de entidades e suas relações.
 
-FOTO DO DIAGRAMA DE CLASSES
+<img src="https://github.com/andersonlenzjava/api.bancoSimulado/blob/master/Diagrama_UML_BancoSimulado.JPG">
 
 - [x] domain da API com:
   - [x] Agencia
