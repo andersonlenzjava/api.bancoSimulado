@@ -2,7 +2,7 @@
 
 ## Introdução 
 
-<p>- Este Projeto apresenta uma API Rest desenvolvida com o auxilio do Spring Framework, e a linguagem Java, para atender os requisitos de um sistema de um pequeno banco virtual, com cliente, tipo de conta, gerente, agência e transações. Com o intuito de exercitar a pratica de montagem de sistemas, com a modelagem da relação entre as entidades, e construção de APIs com todos os beans comuns a um sistema com arquitetura Rest. </p>
+<p>- Este Projeto apresenta uma API Rest desenvolvida com o auxilio do Spring Boot, e a linguagem Java, para atender os requisitos de um sistema de um pequeno banco virtual, com cliente, tipo de conta, gerente, agência e transações. Com o intuito de exercitar a pratica de montagem de sistemas, com a modelagem da relação entre as entidades, e construção de APIs com todos os beans comuns a um sistema com arquitetura Rest. </p>
 
 ## Índice: 
 
