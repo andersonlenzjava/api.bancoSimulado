@@ -44,7 +44,7 @@ Deposito, Saque, Transferência, onde no Deposito e Saque a conta operador e des
 
 <p>	A operação de deposito só é realizada se o valor a ser depositado é positivo, caso não seja é retornado uma mensagem de erro ao usuário. </br>
 A operação de saque só é realizada se o valor do saque for positivo, caso não for é lançado uma exception que é traduzida em uma mensagem de erro ao usuário.</br>
-A operação de transferência só composta por duas sub-rotinas de saque e depósito, sendo realizado as suas respectivas verificações. </br>
+A operação de transferência será composta por duas sub-rotinas de saque e depósito, sendo realizado as suas respectivas verificações. </br>
 O sistema permite deletar uma transação, para isto é necessário informar uma chave de segurança que é o CPF do gerente informado via JSON juntamente no corpo da requisição. </br>
 É possível detalhar uma transação por seu id, listar as transações pelo numero de uma conta, e listar transações maiores que um valor informado na URL da requisição. </p>
 
