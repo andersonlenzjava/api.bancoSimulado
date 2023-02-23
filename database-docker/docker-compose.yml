@@ -1,11 +1,11 @@
-version: "3.1"
-
-services:
-
-  db:
-    image: postgres:14.2-alpine
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
+version: '3' #versão do docker-compose
+services: #servicõs a serem adicionados neste container devem ficar logo abaixo
+  postgres:
+    image: postgres:latest #imagem e versão
+    container_name: postgres #nome do container
+    environment: #definições de ambiente devem ficar aqui abaixo
+      POSTGRES_USER: root #usuário do banco
+      POSTGRES_PASSWORD: root #senha do banco
+      POSTGRES_DB: sistema_mini_banco #nome do banco
     ports:
-      - "5432:5432"
+      - "5433:5432" # porta_do_container:porta_da_maquina_fisica
