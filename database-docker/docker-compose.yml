@@ -9,3 +9,5 @@ services: #servicõs a serem adicionados neste container devem ficar logo abaixo
       POSTGRES_DB: sistema_mini_banco #nome do banco
     ports:
       - "5433:5432" # porta_do_container:porta_da_maquina_fisica
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
