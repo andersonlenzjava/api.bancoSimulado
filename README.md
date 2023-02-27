@@ -29,8 +29,9 @@ Na operacionalização do sistema obedecer a seguinte sequência:
 *  Flyway</br>
 *  PostgresSQL</br>
 *  Postman </br>
-*  Programação Orientada a Objetos</br> 
-* Docker</br>
+*  Programação Orientada a Objetos</br>
+*  Docker</br>
+
 
 ## 📃Funcionalidades
 
