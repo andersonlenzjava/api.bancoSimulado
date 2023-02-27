@@ -53,7 +53,7 @@ public class AgenciaService {
             URI uri = uriBuilder.path("/agencias/{id}").buildAndExpand(agencia.getId()).toUri();
             return ResponseEntity.created(uri).body(new AgenciaResponse(agencia));
         } else {
-            throw new ItemJaExisteException("Agencia já existe");
+            throw new ItemJaExisteException("Agencia já existe !!");
         }
     }
 

@@ -318,7 +318,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"numero\": \"91111\",\r\n        \"tipoConta\":\"ESTUDANTE\",\r\n        \"agenciaNumero\":\"11551\",\r\n        \"cpfCliente\":\"123336344\"\r\n}",
+							"raw": "{\r\n        \"numero\": \"91222\",\r\n        \"tipoConta\":\"CORRENTE\",\r\n        \"agenciaNumero\":\"11111\",\r\n        \"cpfCliente\":\"123336344\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -439,7 +439,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nome\":\"Salazar nueve\",\r\n    \"cpf\":\"666955357\",\r\n    \"dataNascimento\":\"22/01/2000\",\r\n    \"agenciaNumero\":\"11111\"\r\n}",
+							"raw": "{\r\n    \"nome\":\"Jorge lacerda\",\r\n    \"cpf\":\"666955357\",\r\n    \"dataNascimento\":\"22/01/2000\",\r\n    \"agenciaNumero\":\"11111\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -550,7 +550,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"numeroContaSacar\":\"93411\",\r\n    \"valorTransferir\":\"100\"\r\n}",
+							"raw": "{\r\n    \"numeroContaSacar\":\"91111\",\r\n    \"valorTransferir\":\"100\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -579,7 +579,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"numeroContaTransferir\":\"13333\",\r\n    \"numeroContaReceber\":\"12341\",\r\n    \"valorTransferir\":\"105555500\"\r\n}",
+							"raw": "{\r\n    \"numeroContaTransferir\":\"91111\",\r\n    \"numeroContaReceber\":\"91222\",\r\n    \"valorTransferir\":\"1054\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -607,7 +607,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transacao?numeroConta=13333",
+							"raw": "http://localhost:8080/transacao?numeroConta=91111",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -619,7 +619,7 @@
 							"query": [
 								{
 									"key": "numeroConta",
-									"value": "13333"
+									"value": "91111"
 								}
 							]
 						}
@@ -632,7 +632,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/transacao/15",
+							"raw": "http://localhost:8080/transacao/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -640,7 +640,7 @@
 							"port": "8080",
 							"path": [
 								"transacao",
-								"15"
+								"1"
 							]
 						}
 					},

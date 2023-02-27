@@ -30,6 +30,7 @@ Na operacionalização do sistema obedecer a seguinte sequência:
 *  PostgresSQL</br>
 *  Postman </br>
 *  Programação Orientada a Objetos</br> 
+* Docker</br>
 
 ## 📃Funcionalidades
 
@@ -154,6 +155,8 @@ Testar as operações de:</br>
 - Deletar uma transacao (com o cpf do Gerente)</br>
 
 ## Um melhor detalhamento do uso desta API é apresentado no video deste link.
+
+https://youtu.be/LezD2SevfAA </br>
 
 ## Considerações:
 

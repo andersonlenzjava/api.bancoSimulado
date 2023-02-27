@@ -28,6 +28,8 @@ public class TransacaoController {
     @Transactional
     public ResponseEntity<SacarDepositarResponse> depositar(@RequestBody DepositarRegister depositarRegister,
                                                             UriComponentsBuilder uriBuilder) throws Exception {
+
+
         return transacaoService.depositar(depositarRegister, uriBuilder);
     }
 
